@@ -1,0 +1,229 @@
+:root{
+    --pokeball-gradient: linear-gradient(180deg, red 0%, red 50%, white 50%, white 100%);
+}
+
+body{
+    background-color: bisque;
+    display: flex;
+    box-sizing: border-box;
+    justify-content: space-between;
+}
+
+button{
+    background-color: white;
+    border: 2px solid red;
+    border-radius: 50%;
+    padding: 1em;
+    box-shadow: 0 0 5px black;
+}
+button:hover{
+    color:red;
+    background-color: black;
+}
+
+button:active{
+    color:white;
+    background-color: red;
+}
+
+#pokeball-decoration{
+    margin: 2rem;
+    min-width: fit-content;
+    max-width: 20%;
+    aspect-ratio: 1;
+}
+
+#problems{
+    max-width:70%;
+    display: flex;
+    flex-direction: column;
+}
+#problems table,input {
+    font-size: 3rem;
+    line-height: 1.5em;
+}
+
+input[type="number"]{
+    width: 1.8em;
+}
+
+#level-up-modal{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+   
+}
+
+#level-up-modal img{
+display: block;
+
+margin-top: -20%;
+}
+
+#new-pokemon{
+    background-image: radial-gradient(closest-side, #d8300b, #fb566a, #f63c3c00);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    font-family: fantasy;
+    font-weight: 600;
+    font-size: 2em;
+    text-shadow: 0 0 5px rgb(0, 0, 0) ;
+    color:white;
+}
+
+#level-up-modal img:first-of-type{
+    margin-top: 5%;
+    height:50px;
+    z-index: 2;
+}
+#level-up-modal img:last-of-type{
+    margin-top: -20%;
+    height:60px;
+    z-index: 2;
+}
+#collection{
+    background-color: rgba(250,250,250,0.8);
+    border-radius: 10px;
+    max-height: 100vh;
+    overflow-y: scroll;
+}
+
+/*Card*/
+.card{
+    position: relative;
+    margin: 10px;
+    padding: 10px;
+    width: 100px;
+    height: 100px;
+    border: 1px solid gray;
+    box-shadow: 0 0 2px 1px gray;
+    border-radius: 10px;
+    text-align: center;
+}
+.name-container{
+    position: absolute;
+   bottom: 10px;
+   left:10px; 
+    color: white;   
+    text-shadow: 0 0 4px black;
+    font-family:fantasy;
+    
+}
+
+.nr{
+    display: inline-block;
+    text-align: left;
+    padding: 3px;
+    background-color: white;
+    border-radius: inherit;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    box-shadow: 1px 1px 1px 1px gray;
+}
+
+/* XP bar
+*/
+#xp-bar-outer{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    height:200px;
+    width: 20px;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+#xp-bar-inner{
+    width: 100%;
+    height:1%;
+    background-color: greenyellow;
+    transition-duration: 1000ms;
+    transition-timing-function: ease-in-out;
+    border-radius: inherit;
+}
+
+#lvl-number, .lvl-number{
+    font-family: fantasy;
+    font-size: larger;
+    margin-left: auto;
+    margin-right: auto;
+    
+    background-image: var(--pokeball-gradient);
+    border: 3px solid black;
+    border-radius: 50%;
+    padding: 10px;
+
+}
+
+/*whos-that-pokemon?*/
+
+#whos-that-pokemon{
+    width: 430px;
+height: 310px;
+    background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/12ecb7ae-7059-48df-a4f8-2e3fb7858606/d47rmjf-de88a574-49c8-4dcf-9df4-7e11722e8bec.png/v1/fill/w_454,h_340,q_80,strp/who_s_that_pokemon__by_amitlu89_d47rmjf-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MzQwIiwicGF0aCI6IlwvZlwvMTJlY2I3YWUtNzA1OS00OGRmLWE0ZjgtMmUzZmI3ODU4NjA2XC9kNDdybWpmLWRlODhhNTc0LTQ5YzgtNGRjZi05ZGY0LTdlMTE3MjJlOGJlYy5wbmciLCJ3aWR0aCI6Ijw9NDU0In1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.Gg82YjPgXVwCwe3b1FVZnPvC8UtnL37AG9AqdPVzz50');
+    background-position: center; 
+    background-repeat: no-repeat; 
+    background-size: cover; 
+    padding: 25px;
+    border-radius: 10%;
+  
+}
+
+#whos-that-pokemon-img{ 
+    filter: brightness(0%);
+    transition-duration: 1000ms;
+}
+
+#whos-that-pokemon-input{
+    border: 0 solid white;
+    background-color: rgba(250,250,250,0.8);
+    border-radius: 20px;
+    width: 80%;
+    text-align: center;
+}
+
+
+
+@media only screen and (width < 400px) {
+    
+    body{ 
+        flex-direction: column;
+        flex-wrap: wrap;
+        align-content: center;
+    }
+
+    #pokeball-decoration{
+        margin: 0.5rem;
+        max-width:auto;
+        display:flex;
+
+    }
+    
+    #lvl-number, .lvl-number{
+        font-family: fantasy;
+        font-size: larger;
+        padding: auto;
+        height: 36.5px;
+        margin-top: 5px;
+        
+        
+        aspect-ratio: 1;
+        border-width: 5.3px;
+        text-align: center;
+    
+    }
+    
+    #problems table,input {
+        font-size: 1rem;
+    }
+ 
+    #xp-bar-outer{
+        transform-origin: 100% 100%;
+        transform: rotate(90deg);
+        margin-top: -170px;
+        margin-bottom: 15px;
+        margin-left: -20px;
+    }
+}
