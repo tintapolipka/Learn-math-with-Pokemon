@@ -69,7 +69,7 @@ function callToRenders(maxNumber){
    
     toRender += toRenderAxcMINUS(problem6Array);
   
-    toRender += '</table>';
+    toRender += '</table><br><button onclick="location.reload()">Next >></button>';
     id('problems').innerHTML= toRender;
 }
 
