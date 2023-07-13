@@ -186,7 +186,7 @@ height: 310px;
 
 
 
-@media only screen and (width < 400px) {
+@media only screen and (width < 550px) {
     
     body{ 
         flex-direction: column;
@@ -227,3 +227,4 @@ height: 310px;
         margin-left: -20px;
     }
 }
+
