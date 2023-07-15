@@ -77,36 +77,36 @@ function callToRenders(maxNumber){
 function toRenderXbc([a,b,c]){
     const id = genID();
     return `<tr>
-            <td><input type="number" id="${id}xbcX"><td/>
-            <td>+<td/>
-            <td id="${id}xbcB">${b}<td/>
-            <td>=<td/>
-            <td id="${id}xbcC">${c}<td/>
-            <td><button id="${id}btn" onclick="xbcCheck('${id}')"> ? </button><td/>
+            <td><input type="number" id="${id}xbcX"></td>
+            <td>+</td>
+            <td id="${id}xbcB">${b}</td>
+            <td>=</td>
+            <td id="${id}xbcC">${c}</td>
+            <td><button id="${id}btn" onclick="xbcCheck('${id}')"> ? </button></td>
         </tr>`;
 }
 
 function toRenderAxc([a,b,c]){
     const id = genID();
     return `<tr>
-                <td id="${id}axcA">${a}<td/>
-                <td>+<td/>
-                <td id="${id}axcB"><input type="number" id="${id}axcX"><td/>
-                <td>=<td/>
-                <td id="${id}axcC">${c}<td/>
-                <td><button id="${id}btn" onclick="axcCheck('${id}')"> ? </button><td/>
+                <td id="${id}axcA">${a}</td>
+                <td>+</td>
+                <td id="${id}axcB"><input type="number" id="${id}axcX"></td>
+                <td>=</td>
+                <td id="${id}axcC">${c}</td>
+                <td><button id="${id}btn" onclick="axcCheck('${id}')"> ? </button></td>
             </tr>`;
 }
     
 function toRenderAbx([a,b,c]){
     const id = genID();
     return `<tr>
-                <td id="${id}abxA">${a}<td/>
-                <td>+<td/>
-                <td id="${id}abxB">${b}<td/>
-                <td>=<td/>
-                <td id="${id}abxC"><input type="number" id="${id}abxX"><td/>
-                <td><button id="${id}btn" onclick="abxCheck('${id}')"> ? </button><td/>
+                <td id="${id}abxA">${a}</td>
+                <td>+</td>
+                <td id="${id}abxB">${b}</td>
+                <td>=</td>
+                <td id="${id}abxC"><input type="number" id="${id}abxX"></td>
+                <td><button id="${id}btn" onclick="abxCheck('${id}')"> ? </button></td>
             </tr>`;
 }
 
@@ -152,36 +152,36 @@ function abxCheck(Nodeid){
 function toRenderAbxMinus([a,b,c]){
     const id = genID();
     return `<tr>
-                <td id="${id}abxA">${c}<td/>
-                <td>-<td/>
-                <td id="${id}abxB">${b}<td/>
-                <td>=<td/>
-                <td id="${id}abxC"><input type="number" id="${id}abxX"><td/>
-                <td><button id="${id}btn" onclick="abxCheckMinus('${id}')"> ? </button><td/>
+                <td id="${id}abxA">${c}</td>
+                <td>-</td>
+                <td id="${id}abxB">${b}</td>
+                <td>=</td>
+                <td id="${id}abxC"><input type="number" id="${id}abxX"></td>
+                <td><button id="${id}btn" onclick="abxCheckMinus('${id}')"> ? </button></td>
             </tr>`;
 }
 
 function toRenderXbcMINUS([a,b,c]){
     const id = genID();
     return `<tr>
-            <td><input type="number" id="${id}xbcX"><td/>
-            <td>-<td/>
-            <td id="${id}xbcB">${b}<td/>
-            <td>=<td/>
-            <td id="${id}xbcC">${a}<td/>
-            <td><button id="${id}btn" onclick="xbcCheckMinus('${id}')"> ? </button><td/>
+            <td><input type="number" id="${id}xbcX"></td>
+            <td>-</td>
+            <td id="${id}xbcB">${b}</td>
+            <td>=</td>
+            <td id="${id}xbcC">${a}</td>
+            <td><button id="${id}btn" onclick="xbcCheckMinus('${id}')"> ? </button></td>
         </tr>`;
 }
 
 function toRenderAxcMINUS([a,b,c]){
     const id = genID();
     return `<tr>
-                <td id="${id}axcA">${c}<td/>
-                <td>-<td/>
-                <td id="${id}axcB"><input type="number" id="${id}axcX"><td/>
-                <td>=<td/>
-                <td id="${id}axcC">${a}<td/>
-                <td><button id="${id}btn" onclick="axcCheckMinus('${id}')"> ? </button><td/>
+                <td id="${id}axcA">${c}</td>
+                <td>-</td>
+                <td id="${id}axcB"><input type="number" id="${id}axcX"></td>
+                <td>=</td>
+                <td id="${id}axcC">${a}</td>
+                <td><button id="${id}btn" onclick="axcCheckMinus('${id}')"> ? </button></td>
             </tr>`;
 }
 
