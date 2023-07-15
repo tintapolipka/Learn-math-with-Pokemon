@@ -265,7 +265,7 @@ function levelUpModal(newEntryNr,xp,base){
     <div id="level-up-modal">
     <div id="new-pokemon">
       <img src="./img/new.svg" alt="New">
-      <img src="${imageUrl}" alt="${pokemonName}">
+      <img src="${imageUrl}" onerror="this.onerror=null; this.src='${rawImage}'" alt="${pokemonName}">
       <img src="./img/Pokemon.svg" alt="pokemon">
       ${pokemonName}
   </div>
@@ -368,7 +368,7 @@ function whoSThatPokemonRender(){
     let template = `
     <div id="whos-that-pokemon">
      
-    <div ><img id="whos-that-pokemon-img" src="${imageUrl}"></div><input type="text" id="whos-that-pokemon-input" placeholder="?"><button id="confirm-that-pokemon" onclick="whoSThatPokemon('${pokemonName}')">?</button></div>`;
+    <div ><img id="whos-that-pokemon-img" src="${imageUrl}" onerror="this.onerror=null; this.src='${rawImage}'"></div><input type="text" id="whos-that-pokemon-input" placeholder="?"><button id="confirm-that-pokemon" onclick="whoSThatPokemon('${pokemonName}')">?</button></div>`;
     toRender += template;
     id('problems').innerHTML = toRender;
 };
@@ -381,8 +381,9 @@ function whoSThatPokemon(pokemonName){
 } else {console.log('BAKI!');
 id('whos-that-pokemon-input').value = pokemonName;
 id('whos-that-pokemon-input').style.backgroundColor ="red";
-levelUp();
+
 }
+    levelUp();
     id('whos-that-pokemon-img').style.filter = 'brightness(100%)';
     id('confirm-that-pokemon').innerText = 'NEXT >>'
     setTimeout(()=>{id('confirm-that-pokemon').onclick = location.reload();},5000 ) 
