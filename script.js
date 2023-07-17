@@ -368,7 +368,7 @@ function whoSThatPokemonRender(){
     let template = `
     <div id="whos-that-pokemon">
      
-    <div ><img id="whos-that-pokemon-img" src="${imageUrl}" onerror="this.onerror=null; this.src='${rawImage}'"></div><input type="text" id="whos-that-pokemon-input" placeholder="?"><button id="confirm-that-pokemon" onclick="whoSThatPokemon('${pokemonName}')">?</button></div>`;
+    <div ><img id="whos-that-pokemon-img" src="${imageUrl}" onerror="this.onerror=null; this.src='${rawImage}'"></div><input type="text" id="whos-that-pokemon-input" placeholder="Type my name!"><button id="confirm-that-pokemon" onclick="whoSThatPokemon('${pokemonName}')">?</button></div>`;
     toRender += template;
     id('problems').innerHTML = toRender;
 };
@@ -378,14 +378,14 @@ function whoSThatPokemon(pokemonName){
     console.log('OKÉS!')
     setXp(30);
     
-} else {console.log('BAKI!');
-id('whos-that-pokemon-input').value = pokemonName;
-id('whos-that-pokemon-input').style.backgroundColor ="red";
-
-}
+    } else {console.log('BAKI!');
+    id('whos-that-pokemon-input').value = pokemonName;
+    id('whos-that-pokemon-input').style.backgroundColor ="red";
+    }
     levelUp();
     id('whos-that-pokemon-img').style.filter = 'brightness(100%)';
-    id('confirm-that-pokemon').innerText = 'NEXT >>'
+    id('confirm-that-pokemon').innerText = 'NEXT >>';
+    id('confirm-that-pokemon').setAttribute('onclick','');
     setTimeout(()=>{id('confirm-that-pokemon').onclick = location.reload();},5000 ) 
 }
 
