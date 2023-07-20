@@ -332,7 +332,7 @@ function createPokedex(Nr){
 
 function renderPokeDex(){
     let entries = JSON.parse(localStorage['pokedex']);
-    let toRender='POKEDEX';
+    let toRender='<div class="card"><h3>POKEDEX <span class="book">📕</span></h3></div>';
 
     entries.forEach(entry => {
         
