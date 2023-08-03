@@ -12,31 +12,6 @@ function genID(){
     return Math.floor(Math.random()*100000);
 }
 
-function listPokemon(pokedexNr){
-    let toRender=
-    `<table>
-        <tbody>`;
-   pokedexNr.map(entry=> {toRender+= `
-                                    <tr>
-                                    <td ><img src="${entry.image}"></td>
-                                    <td>${entry.nr}</td>
-                                    <td>${entry.name}</td>
-                                    <td>${entry.type[0]}</td>
-                                    <td>${entry.type[1]? entry.type[1]:''}</td>
-                                    </tr>`})
-    toRender+= `    
-        </tbody>
-    </table>`;
-    console.log(toRender);
-    id("collection").innerHTML=toRender;
-}
-
-
-
-
-
-
-
 // render Problems
 
 function makeNumbers(maxNumber){
