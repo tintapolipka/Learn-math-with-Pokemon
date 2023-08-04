@@ -319,11 +319,13 @@ function renderPokeDex(){
 
     let cardTemplate = `<div class="card">
 <div class="nr">${number}</div>
-<img
+<a href="https://bulbapedia.bulbagarden.net/wiki/${name}_(Pok%C3%A9mon)" target="_blank">
+ <img
   class="card-img"
   src="${imgUrl}"
   alt="${name}"
-/>
+ />
+</a>
 <div class="name-container">${name}</div>
 </div>`;
 

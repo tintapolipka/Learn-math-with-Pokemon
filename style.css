@@ -108,6 +108,11 @@ margin-top: -20%;
     border-radius: 10px;
     text-align: center;
 }
+
+.card:hover{
+    background-color: salmon;
+}
+
 .name-container{
     position: absolute;
    bottom: 10px;
