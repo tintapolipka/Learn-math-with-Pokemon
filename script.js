@@ -268,9 +268,8 @@ function levelUp(){
         levelNr = wichLevel(xp,base);
         let newEntryNr = Math.ceil(Math.random()*351);
         print_lvlNr();
-        createPokedex(newEntryNr);
+        levelUpModal(createPokedex(newEntryNr),xp,base);
         renderPokeDex();
-        levelUpModal(newEntryNr,xp,base);
     };
 
 
@@ -300,9 +299,12 @@ function createPokedex(Nr){
     if(!localStorage['pokedex']){localStorage.setItem('pokedex', JSON.stringify([]));};
     let entries = JSON.parse(localStorage['pokedex']);
     
-    entries.push(Nr);
+    let newEntryNr = entries.includes(Nr)? Nr+1: Nr;
+    
+    entries.push(newEntryNr);
     entries.sort((a,b)=> a-b);
     localStorage.setItem('pokedex', JSON.stringify(entries));
+    return newEntryNr;
 }
 
 function renderPokeDex(){
