@@ -307,9 +307,50 @@ function createPokedex(Nr){
     return newEntryNr;
 }
 
+function listFoundEntries(inputText) {
+    const regexp = new RegExp(inputText, "i");
+    let arrToReturn = allPokemonList.filter((entry) => regexp.test(entry.name));
+    return arrToReturn;
+  }
+  
+  let allPokemonList = [];
+  JSON.parse(localStorage.pokedex).forEach((nr) =>
+    allPokemonList.push(findPokemonInPokedex(nr))
+  );
+
+function renderPokeDex(isSearch=false) {
+    let entries = isSearch? listFoundEntries(id('Pokedex-search-index').value) : JSON.parse(localStorage['pokedex']);
+  
+    let toRender='<input type="text" onchange="renderPokeDex(true)" placeholder="🔍 name" id="Pokedex-search-index"><div class="card"><h3>POKEDEX <span class="book">📕</span></h3></div>';
+  
+    entries.forEach(entry => {
+     let currentEntry = isSearch? entry : findPokemonInPokedex(entry);
+      let number = currentEntry["nr"];
+      let imgUrl = currentEntry["image"];
+      let name = currentEntry["name"];
+  
+      let cardTemplate = `<div class="card">
+  <div class="nr">${number}</div>
+  <a href="https://bulbapedia.bulbagarden.net/wiki/${name}_(Pok%C3%A9mon)" target="_blank">
+   <img
+    class="card-img"
+    src="${imgUrl}"
+    alt="${name}"
+   />
+  </a>
+  <div class="name-container">${name}</div>
+  </div>`;
+  
+      toRender += cardTemplate;
+    });
+    id("collection").innerHTML = toRender;
+  };
+  
+
+/*
 function renderPokeDex(){
     let entries = JSON.parse(localStorage['pokedex']);
-    let toRender='<div class="card"><h3>POKEDEX <span class="book">📕</span></h3></div>';
+    let toRender='<input type="text" onchange="renderFilteredPokedex()" placeholder="🔍" id="Pokedex-search-index"><div class="card"><h3>POKEDEX <span class="book">📕</span></h3></div>';
 
     entries.forEach(entry => {
         
@@ -336,7 +377,7 @@ toRender += cardTemplate;
 
 id("collection").innerHTML =toRender;
 }
-
+*/
 function whoSThatPokemonRender(){
     let toRender='';
     const entry = findPokemonInPokedex(Math.floor(Math.random()*127));
