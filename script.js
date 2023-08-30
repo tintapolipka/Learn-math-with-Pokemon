@@ -321,7 +321,7 @@ function listFoundEntries(inputText) {
 function renderPokeDex(isSearch=false) {
     let entries = isSearch? listFoundEntries(id('Pokedex-search-index').value) : JSON.parse(localStorage['pokedex']);
   
-    let toRender='<input type="text" onchange="renderPokeDex(true)" placeholder="🔍 name" id="Pokedex-search-index"><div class="card"><h3>POKEDEX <span class="book">📕</span></h3></div>';
+    let toRender='<input type="text" onchange="renderPokeDex(true)" placeholder="🔍 name" id="Pokedex-search-index"><div class="card" onclick="renderPokeDex()"><h3>POKEDEX <span  class="book">📕</span></h3></div>';
   
     entries.forEach(entry => {
      let currentEntry = isSearch? entry : findPokemonInPokedex(entry);
