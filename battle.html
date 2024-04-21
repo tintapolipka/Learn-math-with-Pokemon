@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Battle template</title>
+  <script src="./battle.js"></script>
+  <link rel="stylesheet" href="battle.css">
+</head>
+
+<body>
+  <dialog class="battle-dialog" open>
+    <div class="battleground">
+      <div class="cloud"></div>
+      <div class="battle-info">
+        <div class="player-pokemon-info">
+          <h3>Bulbasaur<h3>
+              <p>Hp:100</p>
+
+        </div>
+        <div class="player-pokemon-info">
+          <h3>Squirtle<h3>
+              <p>Hp:100</p>
+        </div>
+      </div>          
+    
+      <div class="players pokemon">
+        
+        <img class="hundred-percent-w-and-h"
+        src="https://archives.bulbagarden.net/media/upload/thumb/f/fb/0001Bulbasaur.png/70px-0001Bulbasaur.png"
+        alt="player's pokemon" /></div>
+      <div class=" opponents pokemon hit">
+        <img class="hundred-percent-w-and-h"
+        src="https://archives.bulbagarden.net/media/upload/thumb/5/54/0007Squirtle.png/70px-0007Squirtle.png"
+        alt="opponent's pokemon" /></div>
+        
+      <div class="attack-container">
+        <div id="attack">
+          <!-- LEAF BLADE 
+      <div class="leaf-attack">
+        <div class="leaf"></div>
+        <div class="energy"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>    
+        <div class="leaf"></div>
+        <div class="energy"></div>
+        <div class="leaf"></div>
+        <div class="energy"></div>
+      </div> -->
+
+      <!-- 
+        ROCK THROW
+        <div class="rock-attack">
+        <div class="rock-img"></div>
+      </div> -->
+
+          <!-- WATER PUMP
+        <div class="water-ball squirt"></div>
+        <div class="squirt-attack"></div> -->
+
+          <!-- FIRE ATTACK 
+  <div class="fire-attack">
+  <div class="fire-block"></div>
+  <div class="fire-block"></div>
+  <div class="fire-block"></div>
+  <div class="fire-block"></div>
+  <div class="fire-block"></div>
+  <div class="fire-block"></div>
+  <div class="fire-block"></div>
+  <div class="fire-block"></div>
+  <div class="fire-block"></div>
+  <div class="fire-block"></div>
+  <div class="fire-block"></div>
+  <div class="fire-cone"></div>
+  <script> //fireBlockCSS()</script>
+</div> -->
+
+          <!-- DRAGON CLAW  
+          <div class="dragon-claw"></div> -->
+
+          <!-- FAIRY ATTACK
+          <div class="fairy-attack">
+            <div class="energy"></div>
+            <div class="fairy-glitter"></div>
+            <div class="fairy-glitter"></div>
+            <div class="energy"></div>
+            <div class="fairy-glitter"></div>
+            <div class="fairy-glitter"></div>
+            <div class="fairy-glitter"></div>
+            <div class="fairy-glitter"></div>
+            <div class="fairy-glitter"></div>
+            <div class="fairy-glitter"></div>
+            <div class="fairy-glitter"></div>
+            <div class="fairy-glitter"></div>
+            <div class="energy"></div>
+            <div class="fairy-glitter"></div>
+            <div class="fairy-glitter"></div>
+            <script>//fairyGlitterCSS()</script>
+          </div> -->
+
+          <!-- BUG ATTACK
+            to .players/.opponents .pokemon :
+            <div class="savage-spin-out">
+            <div class="silk-line"></div>
+            <div class="silk-line"></div>
+            <div class="silk-line"></div>
+            <div class="silk-line"></div>
+            <div class="silk-line"></div>
+            <div class="silk-line"></div>
+            <div class="silk-line"></div>
+            </div> -->
+
+          <!--                     
+            PSY-ATTACK
+            <div class="psy-attack">
+
+            <div class="psy-ball">
+              <div class="psy-lightning" id="psy-lightning-1"></div>
+              <div class="psy-lightning" id="psy-lightning-2"></div>
+            </div>
+          </div> -->
+
+                    <!-- WARRIOR ATTACK + .attacking-enemy on attacker
+          <div class="warrior-attack">
+            <div class="warrior-fist-img"></div>
+          </div> -->
+
+          <!-- GHOST ATTACK
+          <div class="ghost-attack"></div> -->
+
+          
+
+
+          <!-- POISON ATTACK
+          <div class="poison-attack">
+            <div class="poison-line"></div>
+            <div class="poison-line"></div>
+            <div class="poison-line"></div>
+            <div class="poison-line"></div>
+            <div class="poison-line"></div>
+            <div class="poison-line"></div>
+            <div class="poison-line"></div>
+            <div class="poison-line"></div>
+            <div class="poison-line"></div>
+            <div class="poison-line"></div>
+            <div class="poison-line"></div>
+            <div class="poison-line"></div>
+          </div> -->
+
+          <!-- LIGHTNING STRIKE
+          to .players/.opponents .pokemon :
+          <div class="psy-lightning" id="psy-lightning-1"></div>
+          <div class="psy-lightning" id="psy-lightning-2"></div>
+         
+      <div class="lightning-attack">            
+        <div class="lightning-bolt" id="lightning-bolt-1"></div> 
+      -->
+      </div>
+
+        </div>
+      </div>
+      
+    </div>
+  </dialog>
+</body>
+
+
+<script>
+  // resize the fire blocks
+  function fireBlockCSS() {
+    const HTMLcollection = document.querySelectorAll('.fire-block');
+    HTMLcollection.forEach((block, index) => {
+      block.style.height = `${index + 1}vmin`;
+      block.style.width = `${85 / HTMLcollection.length}%`;
+      setTimeout(() => {
+        block.style.visibility = 'visible';
+        block.style.animationName = "fire-block-animation";
+        block.style.animationDuration = '1s';
+        console.log(index)
+        setTimeout(() => { block.style.visibility = 'hidden'; }, 900)
+      }, (index + 1) * 60)
+    })
+  }
+
+  function fairyGlitterCSS() {
+    document.querySelectorAll('.fairy-glitter').forEach(
+      div => {
+        const delay = `${Math.floor(Math.random() * 800)}ms`;
+        div.style.animationDelay = delay;
+        console.log(delay)
+      }
+    )
+  }
+
+  function fairyAttack() {
+    document.getElementById('attack').innerHTML = `<div class="fairy-glitter">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M9.80392 5.09804C9.86959 5.09804 9.93496 5.09675 10 5.09419V5.10189C9.93496 5.09933 9.86959 5.09804 9.80392 5.09804ZM4.90196 9.99781C4.90078 7.29154 2.70655 5.09804 0 5.09804C2.70655 5.09804 4.90078 2.90454 4.90196 0.198264C4.90314 2.90454 7.09737 5.09804 9.80392 5.09804C7.09737 5.09804 4.90314 7.29154 4.90196 9.99781ZM4.90581 0C4.90328 0.0643202 4.90199 0.128959 4.90196 0.193893C4.90193 0.128959 4.90064 0.0643202 4.89811 0H4.90581Z"
+                  fill="#FFAEAE" />
+              </svg>
+            </div>`
+  }
+
+  function changeGhostAttackPokemon(node,getUrl){
+    document.querySelector('.ghost-attack').style.backgroundImage = `url(${getUrl})`;
+  }
+
+  //TEst 
+
+</script>
+
+</html>

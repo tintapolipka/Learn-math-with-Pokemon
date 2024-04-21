@@ -2,7 +2,7 @@
     --pokeball-gradient: linear-gradient(180deg, red 0%, red 50%, white 50%, white 100%);
 }
 
-body{
+body,.body{
     background-color: bisque;
     display: flex;
     box-sizing: border-box;
@@ -200,11 +200,24 @@ height: 310px;
     text-align: center;
 }
 
+#number-select-to-multiply{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  
+    width: 150px;
+}
+
+.pokeball-coloring{
+    background-image: var(--pokeball-gradient);
+    font-weight: 700;
+}
 
 
 @media only screen and (width < 550px) {
     
-    body{ 
+
+    body, .body{ 
         flex-direction: column;
         flex-wrap: wrap;
         align-content: center;
