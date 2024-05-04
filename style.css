@@ -27,6 +27,8 @@ button:active{
 }
 
 #pokeball-decoration{
+    display: flex;
+    flex-direction: column;
     margin: 2rem;
     min-width: fit-content;
     max-width: 20%;
@@ -38,8 +40,13 @@ button:active{
     display: flex;
     flex-direction: column;
 }
-#problems table,input {
+#problems table {
     font-size: 3rem;
+    line-height: 1.5em;
+}
+
+input,select {
+    font-size: 1.5rem;
     line-height: 1.5em;
 }
 
@@ -47,7 +54,7 @@ input[type="number"]{
     width: 1.8em;
 }
 
-#level-up-modal{
+#level-up-modal,.level-up-modal{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -61,7 +68,7 @@ display: block;
 margin-top: -20%;
 }
 
-#new-pokemon{
+#new-pokemon, .new-pokemon{
     background-image: radial-gradient(closest-side, #d8300b, #fb566a, #f63c3c00);
     display: flex;
     justify-content: center;
@@ -74,17 +81,17 @@ margin-top: -20%;
     color:white;
 }
 
-#level-up-modal img:first-of-type{
+#level-up-modal img:first-of-type,.level-up-modal img:first-of-type{
     margin-top: 5%;
     height:50px;
     z-index: 2;
 }
-#level-up-modal img:last-of-type{
+#level-up-modal img:last-of-type, .level-up-modal img:last-of-type{
     margin-top: -20%;
     height:60px;
     z-index: 2;
 }
-#collection{
+#collection, .collection{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -102,7 +109,8 @@ margin-top: -20%;
     margin: 10px;
     padding: 10px;
     width: 100px;
-    height: 100px;
+    min-height: 100px;
+    max-height: max-content;
     border: 1px solid gray;
     box-shadow: 0 0 2px 1px gray;
     border-radius: 10px;
@@ -174,7 +182,7 @@ margin-top: -20%;
 /*whos-that-pokemon?*/
 
 #whos-that-pokemon{
-    width: 430px;
+    /* width: 430px; */
 height: 310px;
     background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/12ecb7ae-7059-48df-a4f8-2e3fb7858606/d47rmjf-de88a574-49c8-4dcf-9df4-7e11722e8bec.png/v1/fill/w_454,h_340,q_80,strp/who_s_that_pokemon__by_amitlu89_d47rmjf-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MzQwIiwicGF0aCI6IlwvZlwvMTJlY2I3YWUtNzA1OS00OGRmLWE0ZjgtMmUzZmI3ODU4NjA2XC9kNDdybWpmLWRlODhhNTc0LTQ5YzgtNGRjZi05ZGY0LTdlMTE3MjJlOGJlYy5wbmciLCJ3aWR0aCI6Ijw9NDU0In1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.Gg82YjPgXVwCwe3b1FVZnPvC8UtnL37AG9AqdPVzz50');
     background-position: center; 
@@ -213,6 +221,16 @@ height: 310px;
     font-weight: 700;
 }
 
+.pokedex-svg{
+    width: 50px;
+    height: 80px;
+    background-image: url('./img/Pokedex.svg');
+    background-size: cover;
+    background-position: center;
+    border: 2px solid black;
+    border-radius: 2px;
+
+}
 
 @media only screen and (width < 550px) {
     
@@ -226,8 +244,9 @@ height: 310px;
     #pokeball-decoration{
         margin: 0.5rem;
         max-width:auto;
+        max-height: 7rem;
         display:flex;
-
+        flex-direction: row;
     }
     
     #lvl-number, .lvl-number{
@@ -260,5 +279,64 @@ height: 310px;
         max-width: 90%;
     }
 
+    #Pokéball_1_{
+        display: none;
+    }
+
+    #choose-game-type{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        margin: 10px;
+    }
+
+    select,option{
+        font-size: 1rem;
+        padding: 1px;
+    }
+
+    #problems,.problems{
+        margin-left: auto;
+        margin-right: auto;
+    }
+    #whos-that-pokemon{
+        max-width: 100vw;
+    }
+
+    .pokedex-svg{
+        width: 2rem;
+        height: 3.5rem;
+        margin: .4rem;
+    }
+}
+
+#choose-game-type{
+    background-color: rgba(250,250,250,0.8);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.game-type{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* margin-top: 1rem; */
+    width: 2rem;
+    height: 2rem;
+    box-shadow: inset 0 0 1rem 0px black;
+    cursor: pointer;
+}
+
+.game-type:hover,.game-type:active{
+    border-color: #d8300b;
+}
+
+.float-right{
+    float: right;
+}
+
+.choose-maxNumber-dialog{
+    max-width: 80%;
+    font-size: 1rem;
 }
 

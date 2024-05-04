@@ -42,7 +42,14 @@
 </g>
 </svg>
 
-      <span id="lvl-number"></span>
+      
+	  <div id="choose-game-type">
+		<span id="lvl-number" class="game-type"></span>
+		<div class="lvl-number game-type" onclick="ap()">+/-</div>
+		<div class="lvl-number game-type" onclick="mp()">×/:</div>
+		<div class="lvl-number game-type" onclick="cyh()">VS</div>
+		<div  class="pokedex-svg"> </div>
+	  </div>
     </div>
     <div class="problems" id="problems">
 
@@ -58,11 +65,13 @@
 	<script src="./battle.js"></script>
 
 
-	<!-- <script>
-	const bd = new BattleDialog(); 
-	bd.render();
-	bd.append()
-	</script> -->
+	<script>
+	let x;
+	function cyh(){const cyh = new ChooseYourHero(); cyh.append(); x = cyh}
+	function mp(){const mp = new MultiplyProblems();mp.append();}
+	function ap(){const ap = new AdditionAndSubtractionProblems(0); ap.append();
+	}
+	</script>
 
   </body>
 </html>

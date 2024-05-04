@@ -66,6 +66,45 @@
     visibility: hidden;
   }
 
+
+  .flying-pokemon-animation-player{
+    animation: flying-pokemon-animation 1.7s ease-in-out 0s;
+  }
+
+  @keyframes flying-pokemon-animation {
+    0%{transform: scaleY(0.8)}
+    10%{
+      transform: translateX(10vw) translateY(-70vh) scaleX(0.9);
+    }
+    20%{
+      transform: translateX(55vw) translateY(-70vh) scaleY(130%);
+    }
+    35%{transform: translateX(70vw) translateY(-20vh);}
+    50%{transform: translateX(70vw) translateY(-18vh);}
+    60%{transform: translateX(70vw) translateY(-22vh);}
+    70%{transform: translateX(70vw) translateY(-20vh);}
+    100%{transform: translateX(0) translateY(0);}
+  }
+
+  .flying-pokemon-animation-enemy{
+    animation: flying-pokemon-animation-enemy 1.7s ease-in-out 0s;
+  }
+
+  @keyframes flying-pokemon-animation-enemy {
+    0%{transform: scaleY(0.8)}
+    10%{
+      transform: translateX(-10vw) translateY(-70vh) scaleX(0.9);
+    }
+    20%{
+      transform: translateX(-55vw) translateY(-70vh) scaleY(130%);
+    }
+    35%{transform: translateX(-70vw) translateY(-20vh);}
+    50%{transform: translateX(-70vw) translateY(-18vh);}
+    60%{transform: translateX(-70vw) translateY(-22vh);}
+    70%{transform: translateX(-70vw) translateY(-20vh);}
+    100%{transform: translateX(0) translateY(0);}
+  }
+
   .attacking-enemy{
     animation: attacking-enemy 1s ease-in-out 0s;
   }
@@ -95,7 +134,20 @@
 
     100%{transform: skewX(0);}
   }
-  
+  .get-invisible{
+    animation-duration: 1500ms;
+    animation-name: get-invisible;
+  }
+  @keyframes get-invisible {
+    0%{opacity: 1;}
+    20%{filter: brightness(0);
+      opacity: 0;}
+    80%{filter: brightness(0);
+      opacity: 0;}
+    100%{
+      opacity: 1;}
+  }
+
   .ghost-attack{
     position: absolute;
     right: -20vmin;
@@ -195,12 +247,12 @@
   }
 
   .psy-lightning {
-    position: absolute;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     width: 10vmin;
     height: 10vmin;
+    position: absolute;
     bottom: 0;
     left: 0;
     animation: glitter-animation 200ms linear 0ms infinite;
@@ -412,6 +464,9 @@
   .reverse-attack {
     transform: scaleX(-1);
   }
+  .upside-down {
+    transform: scaleY(-1);
+  }
 
   .attack-container {
     position: absolute;
@@ -477,8 +532,8 @@
     flex-direction: row;
     justify-content: space-between;
     margin: 3vmin;
+    z-index: 20;
   }
-
 
   .player-pokemon-info {
     display: inline-block;
@@ -488,6 +543,40 @@
     border-radius: 20px;
   }
 
+  .wind-blow {
+    background-image: url('./img/attacks/wind-attack.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 30vmin;
+    height: 30vmin;
+    position: absolute;
+    bottom: -10vmin;
+    left: -5vmin;
+    animation: wind-animation 400ms linear 0.7s 1;
+    transform-origin: 0 -10vmin;
+    transition-duration: 500ms;
+    
+    opacity: 0;
+  }
+
+  @keyframes wind-animation {
+    0% {
+      transform: rotate(-90deg);
+      opacity: 0;
+      
+    }
+
+    50% {
+      opacity: 1;
+      transform: rotate(90deg);
+    }
+
+    100% {
+      opacity: 0;
+      transform: rotate(90deg);
+    }
+  }
   .leaf-attack {
     position: absolute;
     display: grid;
@@ -558,6 +647,19 @@
     animation-delay: 0.7s;
   }
 
+  .dead{
+    animation-name: die;
+    animation-duration:  10000ms;
+    animation-timing-function:  linear;
+    animation-delay: 1000ms;
+    transform-origin: 50% 100%;
+    
+  }
+  @keyframes die {
+    0%{transform: rotate(0deg);}
+    10%{transform: rotate(90deg);}
+    100%{transform: rotate(90deg);}
+  }
   .energy {
     width: 3vmin;
     height: 3vmin;
@@ -742,3 +844,77 @@
     border-radius: 10px;
     border-color: black;
   }
+  .attack-button:hover{
+    border-radius: 10px;
+    border-color: rgb(123, 0, 0);
+  }
+  .attack-button-activated{
+    animation-name: flash;
+    animation-duration: 500ms;
+    animation-timing-function: ease-in-out;
+    
+    box-shadow: 0 0 3px 5px rgba(0, 0, 0, 0.383);
+
+  }
+  @keyframes flash {
+    0%{filter: brightness(1); opacity: .5;}
+    50%{filter: brightness(4);}
+    100%{filter: brightness(1);}
+  }
+
+  .opponenet-type-div{
+    border: 1px dotted black;
+    border-radius: inherit;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .problem-element{
+    height: max-content;
+    align-self: center;
+  }
+
+  .game-over-img{
+    margin-top: -20%;
+  }
+
+  .you-win-lose{
+    height: 15%;
+  }
+
+  .active-hero{
+    background-color: rgb(255, 234, 114);
+    box-shadow: 0 0 3px 3px bisque;
+    cursor: pointer;
+  }
+
+  .vertical-slide{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    min-width: 150px;
+    width: 60vw;
+    background-color: rgba(250,250,250,0.8);
+    border-radius: 10px;
+    max-height: 100vh;
+    overflow-x: scroll;
+}
+
+#search-for-hero{
+  max-width: 45vw;
+}
+
+#search-for-hero, .select-type-of-hero{
+  display: inline;
+  width: 20vw;
+}
+
+.z-index-100{
+  z-index: 100;
+}
+
+@media (width < 420px){
+  .vertical-slide{    
+
+width: 100%;}
+}

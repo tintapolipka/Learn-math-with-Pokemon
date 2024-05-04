@@ -81,8 +81,15 @@ class pokedexFns {
     return entry;
   }
 
+  static getOwnPokedexEntries(){
+    const allPokemonList = [];
+    JSON.parse(localStorage.pokedex).forEach((nr) =>
+    allPokemonList.push(this.findPokemonInPokedex(nr)));
+    return allPokemonList;
+  }
+
   static get types() {
-    return {"Normal":{"superEffective":[],"weakAgainst":["Rock","Steel"],"unEffective":["Ghost"],"color":"#9FA19F"},"Fire":{"superEffective":["Grass","Ice","Bug","Steel"],"weakAgainst":["Fire","Water","Rock","Dragon"],"unEffective":[],"color":"red"},"Water":{"superEffective":["Fire","Ground","Rock"],"weakAgainst":["Water","Grass","Dragon"],"unEffective":[],"color":"#2980EF"},"Electric":{"superEffective":["Water","Flying"],"weakAgainst":["Electric","Grass","Dragon"],"unEffective":["Ground"],"color":"#FAC000"},"Grass":{"superEffective":["Water","Ground","Rock"],"weakAgainst":["Fire","Grass","Poison","Flying","Bug","Dragon","Steel"],"unEffective":[],"color":"green"},"Ice":{"superEffective":["Grass","Ground","Flying","Dragon"],"weakAgainst":["Fire","Water","Ice","Steel"],"unEffective":[],"color":"#3DCEF3"},"Fighting":{"superEffective":["Normal","Ice","Rock","Dark","Steel"],"weakAgainst":["Poison","Flying","Psychic","Bug","Fairy"],"unEffective":["Rock"]},"Poison":{"superEffective":["Grass","Fairy"],"weakAgainst":["Poison","Ground","Rock","Ghost","Steel"],"unEffective":["Steel"],"color":"purple"},"Ground":{"superEffective":["Fire","Electric","Poison","Rock","Steel"],"weakAgainst":["Grass","Bug"],"unEffective":["Flying"],"color":"#915121"},"Flying":{"superEffective":["Grass","Fighting","Bug"],"weakAgainst":["Electric","Rock","Steel"],"unEffective":[],"color":"#81B9EF"},"Psychic":{"superEffective":["Fighting","Poison"],"weakAgainst":["Psychic","Steel"],"unEffective":["Dark"],"color":"#EF4179"},"Bug":{"superEffective":["Grass","Psychic","Dark"],"weakAgainst":["Fire","Fighting","Flying","Poison","Ghost","Steel","Fairy"],"unEffective":[],"color":"#91A119"},"Rock":{"superEffective":["Fire","Ice","Flying","Bug"],"weakAgainst":["Fighting","Ground","Steel"],"unEffective":[]},"Ghost":{"superEffective":["Psychic","Ghost"],"weakAgainst":["Dark"],"unEffective":["Normal"]},"Dragon":{"superEffective":["Dragon"],"weakAgainst":["Steel"],"unEffective":["Fairy"]},"Dark":{"superEffective":["Psychic","Ghost"],"weakAgainst":["Fighting","Dark","Fairy"],"unEffective":[],"color":"#624D4E"},"Steel":{"superEffective":["Ice","Rock","Fairy"],"weakAgainst":["Fire","Water","Electric","Steel"],"unEffective":[],"color":"#60A1B8"},"Fairy":{"superEffective":["Fighting","Dragon","Dark"],"weakAgainst":["Fire","Poison","Steel"],"unEffective":[],"color":"#EF70EF"}};
+    return {"Normal":{"superEffective":[],"weakAgainst":["Rock","Steel"],"unEffective":["Ghost"],"color":"#9FA19F"},"Fire":{"superEffective":["Grass","Ice","Bug","Steel"],"weakAgainst":["Fire","Water","Rock","Dragon"],"unEffective":[],"color":"red"},"Water":{"superEffective":["Fire","Ground","Rock"],"weakAgainst":["Water","Grass","Dragon"],"unEffective":[],"color":"#2980EF"},"Electric":{"superEffective":["Water","Flying"],"weakAgainst":["Electric","Grass","Dragon"],"unEffective":["Ground"],"color":"#FAC000"},"Grass":{"superEffective":["Water","Ground","Rock"],"weakAgainst":["Fire","Grass","Poison","Flying","Bug","Dragon","Steel"],"unEffective":[],"color":"green"},"Ice":{"superEffective":["Grass","Ground","Flying","Dragon"],"weakAgainst":["Fire","Water","Ice","Steel"],"unEffective":[],"color":"#3DCEF3"},"Fighting":{"color":"orange","superEffective":["Normal","Ice","Rock","Dark","Steel"],"weakAgainst":["Poison","Flying","Psychic","Bug","Fairy"],"unEffective":["Rock"]},"Poison":{"superEffective":["Grass","Fairy"],"weakAgainst":["Poison","Ground","Rock","Ghost","Steel"],"unEffective":["Steel"],"color":"purple"},"Ground":{"superEffective":["Fire","Electric","Poison","Rock","Steel"],"weakAgainst":["Grass","Bug"],"unEffective":["Flying"],"color":"#915121"},"Flying":{"superEffective":["Grass","Fighting","Bug"],"weakAgainst":["Electric","Rock","Steel"],"unEffective":[],"color":"#81B9EF"},"Psychic":{"superEffective":["Fighting","Poison"],"weakAgainst":["Psychic","Steel"],"unEffective":["Dark"],"color":"#EF4179"},"Bug":{"superEffective":["Grass","Psychic","Dark"],"weakAgainst":["Fire","Fighting","Flying","Poison","Ghost","Steel","Fairy"],"unEffective":[],"color":"#91A119"},"Rock":{"color":"#AFA981", "superEffective":["Fire","Ice","Flying","Bug"],"weakAgainst":["Fighting","Ground","Steel"],"unEffective":[]},"Ghost":{"color":"#704170", "superEffective":["Psychic","Ghost"],"weakAgainst":["Dark"],"unEffective":["Normal"]},"Dragon":{"color":"#5060E1", "superEffective":["Dragon"],"weakAgainst":["Steel"],"unEffective":["Fairy"]},"Dark":{"superEffective":["Psychic","Ghost"],"weakAgainst":["Fighting","Dark","Fairy"],"unEffective":[],"color":"#624D4E"},"Steel":{"superEffective":["Ice","Rock","Fairy"],"weakAgainst":["Fire","Water","Electric","Steel"],"unEffective":[],"color":"#60A1B8"},"Fairy":{"superEffective":["Fighting","Dragon","Dark"],"weakAgainst":["Fire","Poison","Steel"],"unEffective":[],"color":"#EF70EF"}};
   }
 }
 
@@ -219,7 +226,7 @@ class SelectNumbers {
 class Multiplication {
   constructor(parentObj) {
     this.parentObj = parentObj;
-    this.maxNumber = this.parentObj.multiplyNumbersArray.length
+    this.maxNumber = this.parentObj.multiplyNumbersArray && this.parentObj.multiplyNumbersArray.length
       ? this.parentObj.multiplyNumbersArray[
           Math.floor(Math.random() * this.parentObj.multiplyNumbersArray.length)
         ]
@@ -227,6 +234,7 @@ class Multiplication {
     console.log("this.maxNumber: ", this.maxNumber);
 
     this.node = document.createElement("table");
+    this.id = Math.floor(Math.random()*100000);
 
     this.a = Math.ceil(Math.random() * 10);
     this.b = this.maxNumber;
@@ -234,6 +242,7 @@ class Multiplication {
 
     this.inputElement = this.inputCreator();
     this.button = this.buttonCreator();
+    this.btnElement = this.button;
     this.isSolved = false;
   }
 
@@ -242,37 +251,54 @@ class Multiplication {
     inputElement.type = "number";
     inputElement.max = 10 * this.maxNumber;
     inputElement.min = 1;
+    inputElement.addEventListener(
+      'keydown', (event) => {
+        if (event.code !== 'Enter'){return;
+        } else {this.check();}
+      })
 
     return inputElement;
+  }
+
+  check = () => {
+    let isCorrect = this.inputElement.value == this.c;
+    if (isCorrect && !this.isSolved) {
+      this.button.innerText = "✓";
+      setXp(xpAtLevel());
+      levelUp();
+      this.isSolved = true;
+      this.render();
+    }
+    return isCorrect;
   }
 
   buttonCreator() {
     const btn = document.createElement("button");
     btn.innerText = "?";
-    btn.addEventListener("click", () => {
-      if (this.inputElement.value == this.c && !this.isSolved) {
-        this.button.innerText = "✓";
-        setXp(xpAtLevel());
-        levelUp();
-        this.isSolved = true;
-      }
-    });
+    btn.addEventListener("click", this.check);
     return btn;
   }
 
-  get render() {
+  
+ render() {
+    while (this.node.firstChild) {
+      this.node.removeChild(this.node.firstChild);
+    }
+
+    this.node.id = this.id;
     const tableRow = document.createElement("tr");
     tableRow.innerHTML = `<td>${this.a}</td><td> × </td><td>${this.b}</td><td> = </td>`;
     const tableData = document.createElement("td");
-    tableData.append(this.inputElement);
+    tableData.append(!this.isSolved? this.inputElement : this.c);
     tableRow.append(tableData);
     tableRow.append(this.button);
 
     this.node.append(tableRow);
     return this.node;
   }
+
   append() {
-    document.getElementById("problems").append(this.render);
+    document.getElementById("problems").append(this.render());
   }
 }
 
@@ -317,7 +343,7 @@ class MultiplyProblems {
     this.node.id = "multiply-problems";
     this.node.innerHTML = "";
 
-    this.problemList.forEach((problem) => this.node.append(problem.render));
+    this.problemList.forEach((problem) => this.node.append(problem.render()));
     this.node.append(this.nextBtn, this.SelectNumbers.render);
 
     return this.node;
@@ -332,14 +358,24 @@ class MultiplyProblems {
 //addition or subtraction
 
 class AdditionAndSubtractionProblems {
-  constructor(maxNumber) {
-    this.maxNumber = +maxNumber;
+  constructor(maxNumber = 0) {
+    this.maxNumber = maxNumber && typeof(maxNumber) != "object" ? +maxNumber:
+      sessionStorage.maxNumber? +sessionStorage.maxNumber:
+      0 
+    ;
 
     this.problemList = this.problemListCreator();
     //nodes
     this.chooseMaxNumber = this.chooseMaxNumberCreator();
     this.node = document.createElement("table");
     this.nextBtn = this.nextBtnCreator();
+    this.selectMaxNumberInput = !this.maxNumber? new ProblemTypeSelect(this,true,'+/-'): null;
+  }
+
+  reset(){
+    this.problemList = this.problemListCreator();
+    this.chooseMaxNumber = this.chooseMaxNumberCreator();
+    this.render();
   }
 
   nextBtnCreator() {
@@ -348,6 +384,7 @@ class AdditionAndSubtractionProblems {
     btnElement.addEventListener("click", (e) => {
       if (this.problemList.every((li) => li.isCorrect)) {
         console.log("mind jó");
+        this.reset();
       }
 
       console.log("Klikk");
@@ -363,15 +400,15 @@ class AdditionAndSubtractionProblems {
         new AdditionProblem(
           this,
           this.maxNumber,
-          this.makeNumbers(),
-          this.randomProblemType()
+          this.makePrivateNumbers(),
+          AdditionAndSubtractionProblems.randomProblemType()
         )
       );
     }
     return list;
   }
 
-  randomProblemType() {
+  static randomProblemType() {
     const problemTypes = [
       "abx",
       "axc",
@@ -384,7 +421,7 @@ class AdditionAndSubtractionProblems {
   }
 
   chooseMaxNumberCreator() {
-    const dialogeElement = document.createElement("dialog");
+    const dialogeElement = nodeFns.createElement(["choose-maxNumber-dialog"],'dialog')
     dialogeElement.open = true;
 
     const pElement = document.createElement("p");
@@ -393,28 +430,46 @@ class AdditionAndSubtractionProblems {
 
     const inputElement = document.createElement("input");
     inputElement.type = "number";
-    inputElement.max = this.maxNumber ? this.maxNumber : 20;
+    inputElement.max = 99;
     inputElement.min = 10;
-    inputElement.value = inputElement.max;
+    inputElement.value = 30;
 
-    const btnElement = document.createElement("button");
-    btnElement.innerText = "kiválaszt";
+    const btnElement = nodeFns.createElement(["float-right"],"button","kiválaszt");
+    
     const listener = (e) => {
       this.maxNumber = +e.target.parentElement.children[1].value;
       e.target.parentElement.open = false;
+      sessionStorage.setItem('maxNumber',this.maxNumber)
+      this.problemList = this.problemListCreator();
+      this.render();
     };
+
     btnElement.addEventListener("click", listener);
 
     dialogeElement.append(pElement, inputElement, btnElement);
     return dialogeElement;
   }
 
-  makeNumbers() {
+  makePrivateNumbers(){
     let c =
       Math.floor(this.maxNumber / 2) +
       Math.floor((Math.random() * this.maxNumber) / 2);
     let a = Math.floor(Math.random() * c);
     let b = c - a;
+    
+    return [a, b, c];
+  }
+  
+  static makeNumbers(maximum = 0) {
+    let maxNumber = maximum;
+    if(!maximum){maxNumber = this.maxNumber}
+    
+    let c =
+      Math.floor(maxNumber / 2) +
+      Math.floor((Math.random() * maxNumber) / 2);
+    let a = Math.floor(Math.random() * c);
+    let b = c - a;
+    console.log('itt')
     return [a, b, c];
   }
 
@@ -423,11 +478,17 @@ class AdditionAndSubtractionProblems {
     while (this.node.firstChild) {
       this.node.removeChild(this.node.firstChild);
     }
+   
+    
 
     this.node.id = "problems";
     this.node.classList = "problems";
     const tBodyElement = document.createElement("tbody");
-    //to test
+    
+    // if(this.selectMaxNumberInput){
+    // tBodyElement.append(this.selectMaxNumberInput.render());
+    // }
+    
     this.node.append(tBodyElement, document.createElement("br"), this.nextBtn);
     tBodyElement.append(
       !this.maxNumber ? this.chooseMaxNumber : "",
@@ -435,6 +496,14 @@ class AdditionAndSubtractionProblems {
     );
     return this.node;
   }
+
+
+    append() {
+      document.getElementById("problems").innerHTML = "";
+      document.getElementById("problems").append(this.render());
+    }
+  
+
 }
 
 class AdditionProblem {
@@ -442,7 +511,8 @@ class AdditionProblem {
     parentObj = {},
     maxNumber = 20,
     numberArr = [1, 2, 3],
-    problemType = "abx"
+    problemType = "abx",
+    canGainXP = true,
   ) {
     this.parentObj = parentObj;
     this.problemType = problemType;
@@ -450,9 +520,15 @@ class AdditionProblem {
     this.b = numberArr[1];
     this.c = /Minus/.test(problemType) ? numberArr[0] : numberArr[2];
     this.isCorrect = undefined;
+    this.canGainXP = canGainXP;
     //nodes
     this.node = document.createElement("tr");
     this.inputElement = this.createInput(maxNumber);
+    this.btnElement = document.createElement("button");
+
+    this.mainObject = this.parentObj.mainObject;
+    if(this.mainObject && this.mainObject.goTo){this.mainObject.goTo.Problem = this;};
+  
   }
 
   createTd(text) {
@@ -467,6 +543,13 @@ class AdditionProblem {
     inputElement.max = maxNumber;
     inputElement.min = 0;
     inputElement.placeholder = "?";
+
+    inputElement.addEventListener(
+      'keydown', (event) => {
+        if (event.code !== 'Enter'){return;
+        } else {this.check();}
+      })
+
     return inputElement;
   }
 
@@ -497,19 +580,23 @@ class AdditionProblem {
         break;
     }
     if (this.isCorrect) {
-      xpFns.success();
+      if(this.canGainXP){
+        xpFns.success();
+      }
     }
     this.render();
+    return this.isCorrect;
   };
 
   render() {
+    console.warn("AdditionProblem rendered")
     while (this.node.firstElementChild) {
       this.node.removeChild(this.node.firstChild);
     }
 
-    const btnElement = document.createElement("button");
-    btnElement.innerText = this.isCorrect ? "✓" : "?";
-    btnElement.addEventListener("click", this.check);
+    
+    this.btnElement.innerText = this.isCorrect ? "✓" : "?";
+    this.btnElement.addEventListener("click", this.check);
 
     this.node.append(
       this.createTd(
@@ -535,7 +622,7 @@ class AdditionProblem {
           ? this.inputElement
           : this.c
       ),
-      this.createTd(btnElement)
+      this.createTd(this.btnElement)
     );
     return this.node;
   }
@@ -843,7 +930,6 @@ function createPokedex(Nr) {
     localStorage.setItem("pokedex", JSON.stringify([]));
   }
   let entries = JSON.parse(localStorage["pokedex"]);
-
   let newEntryNr = entries.includes(Nr) ? Nr + 1 : Nr;
 
   entries.push(newEntryNr);
@@ -951,5 +1037,6 @@ function firstRun() {
 // Render ALL
 firstRun();
 multiplyNumbersArray = [6, 7];
-const mp = new MultiplyProblems();
-mp.append();
+
+// const mp = new MultiplyProblems();
+// mp.append();
