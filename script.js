@@ -46,13 +46,13 @@ class xpFns {
     console.log("Siker!");
 
     this.setXp(this.xpAtLevel());
-    levelUp(); // TODO beállítani a szintlépést!
   }
 
   static setXp(bonus) {
     let currentXp = this.getXp();
     let newXp = +currentXp + bonus;
     localStorage.setItem("pokemonXp", JSON.stringify(newXp));
+    document.getElementById("xp-bar-inner").style.height = `${newXp % 100}%`;
     console.log("New xp: " + localStorage.pokemonXp);
   }
 }
@@ -75,13 +75,31 @@ class pokedexFns {
       indexOfEntry = Nr - 352;
     } else {
       console.warn("More pokedex editions please!");
+      return 0;
     }
 
     entry = pokedexEdition[indexOfEntry - 1];
     return entry;
   }
 
+  static createPokedex(Nr) {
+    if (!localStorage["pokedex"]) {
+      localStorage.setItem("pokedex", JSON.stringify([]));
+    }
+    let entries = JSON.parse(localStorage["pokedex"]);
+    let newEntryNr = entries.includes(Nr) ? Nr + 1 : Nr;
+  
+    entries.push(newEntryNr);
+    entries.sort((a, b) => a - b);
+    localStorage.setItem("pokedex", JSON.stringify(entries));
+    return newEntryNr;
+  }
+
   static getOwnPokedexEntries(){
+    if(!localStorage.pokedex || typeof(JSON.parse(localStorage.pokedex)) != 'object'){
+      console.warn('Nem létezik a pokedex a localstorage-ban, vagy hibás az adattípus!');
+      return;
+    }
     const allPokemonList = [];
     JSON.parse(localStorage.pokedex).forEach((nr) =>
     allPokemonList.push(this.findPokemonInPokedex(nr)));
@@ -89,8 +107,100 @@ class pokedexFns {
   }
 
   static get types() {
-    return {"Normal":{"superEffective":[],"weakAgainst":["Rock","Steel"],"unEffective":["Ghost"],"color":"#9FA19F"},"Fire":{"superEffective":["Grass","Ice","Bug","Steel"],"weakAgainst":["Fire","Water","Rock","Dragon"],"unEffective":[],"color":"red"},"Water":{"superEffective":["Fire","Ground","Rock"],"weakAgainst":["Water","Grass","Dragon"],"unEffective":[],"color":"#2980EF"},"Electric":{"superEffective":["Water","Flying"],"weakAgainst":["Electric","Grass","Dragon"],"unEffective":["Ground"],"color":"#FAC000"},"Grass":{"superEffective":["Water","Ground","Rock"],"weakAgainst":["Fire","Grass","Poison","Flying","Bug","Dragon","Steel"],"unEffective":[],"color":"green"},"Ice":{"superEffective":["Grass","Ground","Flying","Dragon"],"weakAgainst":["Fire","Water","Ice","Steel"],"unEffective":[],"color":"#3DCEF3"},"Fighting":{"color":"orange","superEffective":["Normal","Ice","Rock","Dark","Steel"],"weakAgainst":["Poison","Flying","Psychic","Bug","Fairy"],"unEffective":["Rock"]},"Poison":{"superEffective":["Grass","Fairy"],"weakAgainst":["Poison","Ground","Rock","Ghost","Steel"],"unEffective":["Steel"],"color":"purple"},"Ground":{"superEffective":["Fire","Electric","Poison","Rock","Steel"],"weakAgainst":["Grass","Bug"],"unEffective":["Flying"],"color":"#915121"},"Flying":{"superEffective":["Grass","Fighting","Bug"],"weakAgainst":["Electric","Rock","Steel"],"unEffective":[],"color":"#81B9EF"},"Psychic":{"superEffective":["Fighting","Poison"],"weakAgainst":["Psychic","Steel"],"unEffective":["Dark"],"color":"#EF4179"},"Bug":{"superEffective":["Grass","Psychic","Dark"],"weakAgainst":["Fire","Fighting","Flying","Poison","Ghost","Steel","Fairy"],"unEffective":[],"color":"#91A119"},"Rock":{"color":"#AFA981", "superEffective":["Fire","Ice","Flying","Bug"],"weakAgainst":["Fighting","Ground","Steel"],"unEffective":[]},"Ghost":{"color":"#704170", "superEffective":["Psychic","Ghost"],"weakAgainst":["Dark"],"unEffective":["Normal"]},"Dragon":{"color":"#5060E1", "superEffective":["Dragon"],"weakAgainst":["Steel"],"unEffective":["Fairy"]},"Dark":{"superEffective":["Psychic","Ghost"],"weakAgainst":["Fighting","Dark","Fairy"],"unEffective":[],"color":"#624D4E"},"Steel":{"superEffective":["Ice","Rock","Fairy"],"weakAgainst":["Fire","Water","Electric","Steel"],"unEffective":[],"color":"#60A1B8"},"Fairy":{"superEffective":["Fighting","Dragon","Dark"],"weakAgainst":["Fire","Poison","Steel"],"unEffective":[],"color":"#EF70EF"}};
+    //return {"Normal":{"superEffective":[],"weakAgainst":["Rock","Steel"],"unEffective":["Ghost"],"color":"#9FA19F"},"Fire":{"superEffective":["Grass","Ice","Bug","Steel"],"weakAgainst":["Fire","Water","Rock","Dragon"],"unEffective":[],"color":"red"},"Water":{"superEffective":["Fire","Ground","Rock"],"weakAgainst":["Water","Grass","Dragon"],"unEffective":[],"color":"#2980EF"},"Electric":{"superEffective":["Water","Flying"],"weakAgainst":["Electric","Grass","Dragon"],"unEffective":["Ground"],"color":"#FAC000"},"Grass":{"superEffective":["Water","Ground","Rock"],"weakAgainst":["Fire","Grass","Poison","Flying","Bug","Dragon","Steel"],"unEffective":[],"color":"green"},"Ice":{"superEffective":["Grass","Ground","Flying","Dragon"],"weakAgainst":["Fire","Water","Ice","Steel"],"unEffective":[],"color":"#3DCEF3"},"Fighting":{"color":"orange","superEffective":["Normal","Ice","Rock","Dark","Steel"],"weakAgainst":["Poison","Flying","Psychic","Bug","Fairy"],"unEffective":["Rock"]},"Poison":{"superEffective":["Grass","Fairy"],"weakAgainst":["Poison","Ground","Rock","Ghost","Steel"],"unEffective":["Steel"],"color":"purple"},"Ground":{"superEffective":["Fire","Electric","Poison","Rock","Steel"],"weakAgainst":["Grass","Bug"],"unEffective":["Flying"],"color":"#915121"},"Flying":{"superEffective":["Grass","Fighting","Bug"],"weakAgainst":["Electric","Rock","Steel"],"unEffective":[],"color":"#81B9EF"},"Psychic":{"superEffective":["Fighting","Poison"],"weakAgainst":["Psychic","Steel"],"unEffective":["Dark"],"color":"#EF4179"},"Bug":{"superEffective":["Grass","Psychic","Dark"],"weakAgainst":["Fire","Fighting","Flying","Poison","Ghost","Steel","Fairy"],"unEffective":[],"color":"#91A119"},"Rock":{"color":"#AFA981", "superEffective":["Fire","Ice","Flying","Bug"],"weakAgainst":["Fighting","Ground","Steel"],"unEffective":[]},"Ghost":{"color":"#704170", "superEffective":["Psychic","Ghost"],"weakAgainst":["Dark"],"unEffective":["Normal"]},"Dragon":{"color":"#5060E1", "superEffective":["Dragon"],"weakAgainst":["Steel"],"unEffective":["Fairy"]},"Dark":{"superEffective":["Psychic","Ghost"],"weakAgainst":["Fighting","Dark","Fairy"],"unEffective":[],"color":"#624D4E"},"Steel":{"superEffective":["Ice","Rock","Fairy"],"weakAgainst":["Fire","Water","Electric","Steel"],"unEffective":[],"color":"#60A1B8"},"Fairy":{"superEffective":["Fighting","Dragon","Dark"],"weakAgainst":["Fire","Poison","Steel"],"unEffective":[],"color":"#EF70EF"}};
+  
+    return {"Normal":{"superEffective":[],"weakAgainst":["Rock","Steel"],"unEffective":["Ghost"],"color":"#9FA19F","uniChar":""},"Fire":{"superEffective":["Grass","Ice","Bug","Steel"],"weakAgainst":["Fire","Water","Rock","Dragon"],"unEffective":[],"color":"red","uniChar":"🔥"},"Water":{"superEffective":["Fire","Ground","Rock"],"weakAgainst":["Water","Grass","Dragon"],"unEffective":[],"color":"#2980EF","uniChar":"🌊"},"Electric":{"superEffective":["Water","Flying"],"weakAgainst":["Electric","Grass","Dragon"],"unEffective":["Ground"],"color":"#FAC000","uniChar":"⚡"},"Grass":{"superEffective":["Water","Ground","Rock"],"weakAgainst":["Fire","Grass","Poison","Flying","Bug","Dragon","Steel"],"unEffective":[],"color":"green","uniChar":"🍃"},"Ice":{"superEffective":["Grass","Ground","Flying","Dragon"],"weakAgainst":["Fire","Water","Ice","Steel"],"unEffective":[],"color":"#3DCEF3","uniChar":"❄"},"Fighting":{"color":"orange","superEffective":["Normal","Ice","Rock","Dark","Steel"],"weakAgainst":["Poison","Flying","Psychic","Bug","Fairy"],"unEffective":["Rock"],"uniChar":"✊"},"Poison":{"superEffective":["Grass","Fairy"],"weakAgainst":["Poison","Ground","Rock","Ghost","Steel"],"unEffective":["Steel"],"color":"#9b019b","uniChar":"☠"},"Ground":{"superEffective":["Fire","Electric","Poison","Rock","Steel"],"weakAgainst":["Grass","Bug"],"unEffective":["Flying"],"color":"#915121","uniChar":"🟤"},"Flying":{"superEffective":["Grass","Fighting","Bug"],"weakAgainst":["Electric","Rock","Steel"],"unEffective":[],"color":"#81B9EF","uniChar":"🐦"},"Psychic":{"superEffective":["Fighting","Poison"],"weakAgainst":["Psychic","Steel"],"unEffective":["Dark"],"color":"#EF4179","uniChar":"🧠"},"Bug":{"superEffective":["Grass","Psychic","Dark"],"weakAgainst":["Fire","Fighting","Flying","Poison","Ghost","Steel","Fairy"],"unEffective":[],"color":"#91A119","uniChar":"🐛"},"Rock":{"color":"#AFA981","superEffective":["Fire","Ice","Flying","Bug"],"weakAgainst":["Fighting","Ground","Steel"],"unEffective":[],"uniChar":"🌑"},"Ghost":{"color":"#704170","superEffective":["Psychic","Ghost"],"weakAgainst":["Dark"],"unEffective":["Normal"],"uniChar":"👻"},"Dragon":{"color":"#5060E1","superEffective":["Dragon"],"weakAgainst":["Steel"],"unEffective":["Fairy"],"uniChar":"🐉"},"Dark":{"superEffective":["Psychic","Ghost"],"weakAgainst":["Fighting","Dark","Fairy"],"unEffective":[],"color":"#624D4E","uniChar":"⚫"},"Steel":{"superEffective":["Ice","Rock","Fairy"],"weakAgainst":["Fire","Water","Electric","Steel"],"unEffective":[],"color":"#60A1B8","uniChar":"⚔"},"Fairy":{"superEffective":["Fighting","Dragon","Dark"],"weakAgainst":["Fire","Poison","Steel"],"unEffective":[],"color":"#EF70EF","uniChar":"🧚"}};
   }
+}
+
+class WhoSThatPokemon{
+  constructor(rootObj){
+    this.rootObj = rootObj;
+    
+    this.entry = pokedexFns.findPokemonInPokedex(Math.floor(Math.random() * 351));
+    this.entryIndex = Number(this.entry.nr.replace('#',''));
+    this.smallImg = this.entry["image"];
+    this.bigImg = this.smallImg.replace("70px-", "250px-");
+    this.node = nodeFns.createElement([],'div','',"whos-that-pokemon");
+    this.whosThatPokeImg = nodeFns.createElement([],'img','',"whos-that-pokemon-img");
+    this.isSolved = false;
+    this.options = this.optionsCreator();
+    this.nextBtn = this.nextBtnCreator();
+  
+  if(this.rootObj && this.rootObj.goTo){}
+  this.rootObj.goTo.WhoSThatPokemon = this;
+  }
+
+  nextBtnCreator(){
+    const nextBtn = nodeFns.createElement(["next-button","float-right"],'button',"NEXT >>");
+    nextBtn.style.marginBottom = '-2rem';
+    nextBtn.addEventListener('click',this.rootObj.lvlUpModalNextBtnListener)
+
+    return nextBtn;
+  };
+
+  optionsCreator(){
+    let optionsArray = [];
+    if(this.entryIndex == 1){
+      optionsArray = [1,2,3,4];
+    } else if(this.entryIndex == 351){
+      optionsArray = [348,349,350,351];
+    } else {
+    for(let i = this.entryIndex -1; i <= this.entryIndex+2; i++){
+      optionsArray.push(i);
+    }};
+    return optionsArray.map(nr=>pokedexFns.findPokemonInPokedex(nr).name).sort();
+  }
+
+  render(){
+  while (this.node.firstChild) {
+    this.node.removeChild(this.node.firstChild);
+  }
+  const containerDiv = nodeFns.createElement();
+    this.whosThatPokeImg.src = this.bigImg;
+    this.whosThatPokeImg.alt = "Who's that Pokemon?";
+    this.whosThatPokeImg.setAttribute('onerror',`this.onerror=null; this.src='${this.smallImg}'`); 
+
+  const anwersDiv = nodeFns.createElement(["whos-that-answers-div"]);
+  this.options.forEach(answer=>{
+    const answerElement = nodeFns.createElement(["whos-that-answer"],'div',answer,answer);
+    answerElement.addEventListener('click',this.check);
+    anwersDiv.append(answerElement);
+    if(this.isSolved && answer != this.entry.name){
+      answerElement.style.opacity = '.4';
+    }
+  })
+  containerDiv.append(this.whosThatPokeImg);
+
+  this.node.append(
+    containerDiv,
+    anwersDiv,
+    this.isSolved? this.nextBtn : '',
+    
+  );
+  return this.node;
+}
+
+check = (event) =>{
+  if(this.isSolved){return} 
+  this.isSolved = true;
+   this.whosThatPokeImg.style.filter = "brightness(100%)";
+  if(event.target.id == this.entry.name){
+    console.log("Helyes válasz a "+ event.target.id)
+    //xpFns.setXp(30); -> átrakva a setTimeout-ba
+    this.rootObj? this.rootObj.levelUp() : levelUp();
+  } 
+  setTimeout(()=>{
+    if(event.target.id == this.entry.name){ xpFns.setXp(30);}
+    this.render()
+  },1000)
+}
+
+append =()=>{
+  document.getElementById('problems').innerHTML = "";
+  console.log(this)
+  document.getElementById('problems').append(this.render());
+}
 }
 
 class PokeMath {
@@ -231,8 +341,7 @@ class Multiplication {
           Math.floor(Math.random() * this.parentObj.multiplyNumbersArray.length)
         ]
       : 2;
-    console.log("this.maxNumber: ", this.maxNumber);
-
+    
     this.node = document.createElement("table");
     this.id = Math.floor(Math.random()*100000);
 
@@ -264,8 +373,9 @@ class Multiplication {
     let isCorrect = this.inputElement.value == this.c;
     if (isCorrect && !this.isSolved) {
       this.button.innerText = "✓";
-      setXp(xpAtLevel());
-      levelUp();
+      xpFns.setXp(xpAtLevel());
+      
+      this.parentObj.parentObj.parentObj.rootObj.levelUp(); // TODO kikeresni a megfelelő elérési utat!
       this.isSolved = true;
       this.render();
     }
@@ -303,7 +413,8 @@ class Multiplication {
 }
 
 class MultiplyProblems {
-  constructor() {
+  constructor(rootObj) {
+    this.rootObj = rootObj
     this.multiplyNumbersArray = sessionStorage["multiplyNumbersArray"]
       ? JSON.parse(sessionStorage["multiplyNumbersArray"])
       : multiplyNumbersArray;
@@ -311,6 +422,10 @@ class MultiplyProblems {
     this.problemList = this.createProblems();
     this.SelectNumbers = new SelectNumbers(this);
     this.node = document.createElement("div");
+  
+    if(this.rootObj && this.rootObj.goTo){
+      this.rootObj.goTo.MultiplyProblems = this;
+    }
   }
 
   nextBtnCreator() {
@@ -358,7 +473,8 @@ class MultiplyProblems {
 //addition or subtraction
 
 class AdditionAndSubtractionProblems {
-  constructor(maxNumber = 0) {
+  constructor(rootObj,maxNumber = 0) {
+    this.rootObj = rootObj;
     this.maxNumber = maxNumber && typeof(maxNumber) != "object" ? +maxNumber:
       sessionStorage.maxNumber? +sessionStorage.maxNumber:
       0 
@@ -370,6 +486,9 @@ class AdditionAndSubtractionProblems {
     this.node = document.createElement("table");
     this.nextBtn = this.nextBtnCreator();
     this.selectMaxNumberInput = !this.maxNumber? new ProblemTypeSelect(this,true,'+/-'): null;
+    if(this.rootObj && this.rootObj.goTo){
+      this.rootObj.goTo.AdditionAndSubtractionProblems = this;
+    }
   }
 
   reset(){
@@ -424,7 +543,7 @@ class AdditionAndSubtractionProblems {
     const dialogeElement = nodeFns.createElement(["choose-maxNumber-dialog"],'dialog')
     dialogeElement.open = true;
 
-    const pElement = document.createElement("p");
+    const pElement = document.createElement("div");
     pElement.innerText =
       "Mi legyen a legmagasabb szám, amivel számolni szeretnél?";
 
@@ -581,7 +700,9 @@ class AdditionProblem {
     }
     if (this.isCorrect) {
       if(this.canGainXP){
+       
         xpFns.success();
+        this.parentObj.rootObj.levelUp();
       }
     }
     this.render();
@@ -945,7 +1066,7 @@ function listFoundEntries(inputText) {
 }
 
 let allPokemonList = [];
-JSON.parse(localStorage.pokedex).forEach((nr) =>
+JSON.parse(localStorage.pokedex? localStorage.pokedex : "[]").forEach((nr) =>
   allPokemonList.push(findPokemonInPokedex(nr))
 );
 
@@ -978,6 +1099,101 @@ function renderPokeDex(isSearch = false) {
     toRender += cardTemplate;
   });
   id("collection").innerHTML = toRender;
+}
+class RenderPokeDex{
+  constructor(){
+    this.allEntriesToShow = pokedexFns.getOwnPokedexEntries();
+    this.inputNode = this.createInput();
+    this.searchBtn = this.searchBtnCreator();
+    this.node = document.getElementById('collection');
+  }
+
+  searchBtnCreator(){
+    const btn = nodeFns.createElement([],'button','🔍','Pokedex-search-btn');
+    btn.addEventListener('click',()=>listFoundEntries(this.inputNode.value));
+    return btn;
+  }
+
+  createInput(){
+    const inputElement = document.createElement('input');
+    inputElement.type="text"; 
+    inputElement.placeholder="🔍 name"; 
+    inputElement.id="Pokedex-search-index";
+    inputElement.addEventListener('change',(event)=>{
+      this.listFoundEntries(event.target.value);
+    })
+    return inputElement;
+  }
+
+  listFoundEntries(inputText) {
+    const regexp = new RegExp(inputText, "i");
+    this.allEntriesToShow = pokedexFns.getOwnPokedexEntries().filter((entry) => regexp.test(entry.name));
+    this.render();
+  }
+  refresh(){
+    this.allEntriesToShow = pokedexFns.getOwnPokedexEntries();
+    this.render();
+  }
+
+  render(){
+    while (this.node.firstChild) {
+      this.node.removeChild(this.node.firstChild);
+    } 
+
+    const pokedexIconDiv = nodeFns.createElement(["card","justify-center"],'div',nodeFns.createElement(["pokedex-svg"]));  
+    pokedexIconDiv.addEventListener('click',()=>{
+      this.allEntriesToShow = pokedexFns.getOwnPokedexEntries();
+      this.render();
+    })
+    
+    const allCardsOfEntries = this.allEntriesToShow.map(entry=>{
+      const currentEntry = new PokeDexCard(entry);
+      return currentEntry.render();
+    })
+    const searchDiv = nodeFns.createElement(["search-pokedex-div"]);
+      searchDiv.append(
+        this.inputNode,
+        this.searchBtn,
+      );
+
+    this.node.append(
+      pokedexIconDiv,
+      searchDiv,
+
+      ...allCardsOfEntries
+    );
+
+    return this.node;
+  }
+
+}
+
+class PokeDexCard{
+  constructor(entry){
+    this.entry = entry;
+    this.node = nodeFns.createElement(["card"]);
+  }
+  render(){
+    
+    const typesString = this.entry.type.reduce((accu,actu)=>{
+      return accu + pokedexFns.types[actu].uniChar;
+  },'');
+
+    const numberDiv = nodeFns.createElement(['nr'],'div',this.entry.nr);
+    const imageLink = nodeFns.createElement( [],'a',nodeFns.img(this.entry.image,this.entry.name,["card-img"]));
+    imageLink.href = `https://bulbapedia.bulbagarden.net/wiki/${this.entry.name}_(Pok%C3%A9mon)`;
+    imageLink.target="_blank";
+    
+   
+    const nameContainerDiv = nodeFns.createElement(["name-container"],'div',this.entry.name)
+
+    this.node.append(
+      numberDiv, typesString,
+      imageLink,
+      nameContainerDiv,
+    )
+    return this.node;
+  }
 }
 
 function whoSThatPokemonRender() {
@@ -1034,9 +1250,234 @@ function firstRun() {
   print_lvlNr();
 }
 
+class Root{
+  constructor(){
+    this.firstStart = this.firstRun();
+    
+    this.goTo = {};
+    this.rootObj = this;
+    this.levelNr = localStorage.pokemonXp? xpFns.wichLevel(+localStorage.pokemonXp,100) : 1; 
+
+    this.Menu = new Menu(this)
+    this.ChooseYourHero = new ChooseYourHero(this);
+    this.MultiplyProblems = new MultiplyProblems(this);
+    this.AdditionAndSubtractionProblems = new AdditionAndSubtractionProblems(this,0);
+    this.RenderPokeDex = new RenderPokeDex();
+    this.lvlUpModalNextBtn = this.lvlUpModalNextBtnCreator();
+    
+    this.toDoLIst = [];
+  
+  }
+
+  firstRun() {
+    if (!localStorage.pokemonXp || !Boolean(+localStorage.pokemonXp) || !localStorage.pokedex) {
+      console.log("Első indítás");
+  
+      //setting local data
+      localStorage.setItem("pokemonXp", "1");
+      localStorage.setItem("pokedex", "[]");      
+      
+      //clearing "problems" div
+      const problemsNode =  document.getElementById("problems");
+      problemsNode.innerHTML = '';
+      
+      //creating welcome div
+      const firstRunDiv = nodeFns.createElement();
+      const welcomeH1 = nodeFns.createElement([],'h1','Üdvözöllek leendő PoKéMon mester!');
+      const gottaCatchP = nodeFns.createElement([],'p','Szerezd meg hát mind!');
+      const ashP = nodeFns.createElement([],'p','Ash');
+      const letsStartBtn = nodeFns.createElement(["float-right"],'button','Kezdjük');
+      letsStartBtn.addEventListener('click',()=>{
+        this.render();
+      })
+
+      const welcomeTxtDiv = nodeFns.createElement(["welcome-text-container"]);
+      welcomeTxtDiv.append(
+        welcomeH1,
+        'Ebben a játékban matek példákat kell megoldanod a egy általad kiválasztott számkörben. A kérdőjelre kattintva kiderül, helyes-e a válaszod? Minden sikeres megoldás Xp-t ér. A zöld oszlop mutatja, hogy mennyi Xp kell a következő szintlépéshez. Minden szintlépéskor új pokemonnal gyarapszik a gyűjteményed! Vágj bele a kalandba most!',
+        gottaCatchP,
+        ashP,
+        letsStartBtn,
+      )
+
+      const ashImgElement = nodeFns.img("https://upload.wikimedia.org/wikipedia/en/e/e4/Ash_Ketchum_Journeys.png","Ash welcomes you!");
+      const ashImgDiv = nodeFns.createElement([],'div',ashImgElement);
+
+      firstRunDiv.append(
+        welcomeTxtDiv,
+        ashImgDiv,
+      )
+      //appending welcome div
+      problemsNode.append(firstRunDiv);
+      return true;
+    } else {
+      xpFns.setXp(0);
+      console.log("Többedik indítás OOP alapon");
+      return false;
+    }
+  }
+
+  lvlUpModalNextBtnCreator(){
+    const btnElement = nodeFns.createElement([],'button','NEXT>>');
+    btnElement.addEventListener('click',()=>{
+      if(this.toDoLIst.length){
+        const firstToDo = this.toDoLIst.shift();
+        firstToDo();
+      } else {
+        this.render();
+      }
+    })
+
+    return btnElement;
+  }
+  lvlUpModalNextBtnListener =()=>{
+    if(this.toDoLIst.length){
+      const firstToDo = this.toDoLIst.shift();
+      firstToDo();
+    } else {
+      this.render();
+    }
+  }
+
+  levelUpModalCreator(argArr){
+    const [newPokemon,getLevelNr] = argArr;
+    let entry = findPokemonInPokedex(newPokemon);
+    let rawImage = entry["image"];
+    const imageUrl = rawImage.replace("70px-", "250px-");
+    const pokemonName = entry["name"];
+
+    const innerDivElement = nodeFns.createElement([],'div','','new-pokemon');
+    const pokemonImg = nodeFns.img(imageUrl,pokemonName);
+      pokemonImg.setAttribute('onerror',`this.onerror=null; this.src='${rawImage}'`)
+    
+    innerDivElement.append(
+      nodeFns.img("./img/new.svg","New"),
+      pokemonImg,
+      nodeFns.img("./img/Pokemon.svg","Pokemon"),
+      pokemonName,
+    )
+
+    const element = nodeFns.createElement([],'div',innerDivElement,'level-up-modal');
+    element.append(
+      "NEW LEVEL:",
+      nodeFns.createElement(["lvl-number"],'span',getLevelNr),
+      this.lvlUpModalNextBtn,
+    )
+    
+    document.getElementById('problems').innerHTML = '';
+    document.getElementById('problems').append(element);
+  }
+
+  levelUp(){
+    const isToDoLIstEmpty = !Boolean(this.toDoLIst.length)
+    let lvlUpThisManyTimes = 0;
+    while (localStorage.pokemonXp && this.levelNr != xpFns.wichLevel(+localStorage.pokemonXp,100) && this.levelNr<10000) {
+      console.log("Még kell szintet lépni! " +  this.levelNr);
+      const newPokemon = Math.ceil(Math.random() * 424);
+      pokedexFns.createPokedex(newPokemon);
+
+      this.toDoLIst.push(this.levelUpModalCreator.bind(this,[newPokemon,this.levelNr]));
+      const whosThatPokemon = new WhoSThatPokemon(this);
+      this.toDoLIst.push(whosThatPokemon.append);
+      
+      this.levelNr++;
+      lvlUpThisManyTimes++;
+    }
+    if(this.toDoLIst.length && lvlUpThisManyTimes && isToDoLIstEmpty){
+      this.toDoLIst.shift()();
+    }
+    this.RenderPokeDex.refresh();
+  }
+
+  render(){
+    this.Menu.append();
+    
+    switch (true) {
+      case this.firstStart == true:
+        this.firstStart = false;
+      break;
+      case this.goTo.Menu.selected == '+/-':
+      this.AdditionAndSubtractionProblems.append();
+        break;
+    case this.goTo.Menu.selected == '×/:':
+    this.MultiplyProblems.append();
+          break;
+    case this.goTo.Menu.selected == 'VS':
+    this.ChooseYourHero.append();
+        break;
+      default:
+        console.log('Szar van a palacsintában!')
+        break;
+    } 
+    
+    this.RenderPokeDex.render();
+  }
+}
+
+class Menu{
+  constructor(rootObj){
+    this.rootObj = rootObj;
+    this.selected = '+/-';
+
+    this.addOrSubstrBtn = this.buttonGenerator('+/-');
+    this.MultiplyBtn = this.buttonGenerator('×/:');
+    this.vsBtn = this.buttonGenerator('VS');
+    this.pokedexBtn = this.pokedexBtnCreator();
+    this.node = nodeFns.createElement([],'div','','choose-game-type');
+
+    if(this.rootObj && this.rootObj.goTo){
+      this.rootObj.goTo.Menu = this;
+    }
+  }
+
+  pokedexBtnCreator(){
+    const pokeBtn = nodeFns.createElement(["pokedex-svg"],'div',' ')
+    pokeBtn.addEventListener('click',()=>{console.log('show pokedex')})
+    return pokeBtn;
+  }
+
+  buttonGenerator(text){
+   const btn = nodeFns.createElement(["lvl-number","game-type"],'div',text);
+   
+   const eventListener =()=>{
+    this.selected = text;
+    this.rootObj.render(); 
+   }
+   
+   btn.addEventListener('click',eventListener); 
+   return btn;
+  }
+
+  render(){
+    console.log('menu rendered')
+    while (this.node.firstChild) {
+      this.node.removeChild(this.node.firstChild);
+    }  
+    const lvlNumberSpan = nodeFns.createElement(["game-type"],'span',`level ${xpFns.wichLevel(localStorage.pokemonXp? localStorage.pokemonXp:0,100)}`,'lvl-number');  
+
+    this.node.append(
+      lvlNumberSpan,
+      this.addOrSubstrBtn,
+      this.MultiplyBtn,
+      this.vsBtn,
+      this.pokedexBtn,
+    )
+    return this.node;
+  }
+
+  append(){
+    const pokeballDecoration = document.getElementById('pokeball-decoration');
+    while (pokeballDecoration.firstChild) {
+      pokeballDecoration.removeChild(pokeballDecoration.firstChild);
+    }  
+    pokeballDecoration.append(this.render());
+  }
+}
+
 // Render ALL
-firstRun();
+//firstRun();
 multiplyNumbersArray = [6, 7];
 
 // const mp = new MultiplyProblems();
 // mp.append();
+const r = new Root(); r.render()

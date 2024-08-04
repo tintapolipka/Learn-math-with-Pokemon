@@ -10,6 +10,8 @@ class BattleDialog {
     this.opponent = opponent;
     this.playersTurn = true;
 
+    this.animationInProgrress = null;
+
     this.goTo = {};
     this.battleground = nodeFns.createElement(["battleground"]);
     this.attackContainer = new AttackContainer(this);
@@ -80,13 +82,523 @@ class BattleDialog {
   }
 }
 
+// class AttackContainer {
+//   constructor(parentObj) {
+//     this.parentObj = parentObj;
+//     this.mainObject = parentObj;
+    
+//     this.node = nodeFns.createElement(["attack-container"]);
+//     //Kell-e az alábbi?
+//     //this.opponentAttackNode = nodeFns.createElement(["attack-container", "opponent-attack-container"]);
+    
+//     this.allTypeFns = this.allTypeFnsSetter();
+//     this.attackQueve = [()=>{console.log('Go!')}];
+//     this.setIntervalId = setInterval(() => {
+//       this.attackQueveHandler(); 
+//       if(this.parentObj.math.isEnded){
+//         this.parentObj.math.endBattle();
+//       }
+//     }, 500);
+
+    
+//     parentObj.goTo.AttackContainer = this;
+//   }
+
+//   attackQueveHandler(){
+//     if(this.attackQueve.length && !this.mainObject.animationInProgrress){this.attackQueve.shift()()}
+//     console.log(this.attackQueve);
+//   }
+
+//   allTypeFnsSetter() {
+//     return {
+//       Normal: () => {
+//         this.mainObject.animationInProgrress = true;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        
+//         const attacker = this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+//         const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+      
+//         attacker.classList.add(this.parentObj.playersTurn? "attacking-enemy" : "attacking-player");
+//         defender.classList.add("hit");
+//         setTimeout(() => {
+//           attacker.classList.remove("attacking-enemy")
+//           attacker.classList.remove("attacking-player");
+//           defender.classList.remove("hit");
+//           console.log("attack removed")
+//           this.mainObject.animationInProgrress = false;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         }, 1000);
+      
+//       },
+//       Fire: () => {
+//         this.mainObject.animationInProgrress = true;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         const fireBlockArray = [];
+
+//         function fireBlockCSS(coneNode) {
+//           const HTMLcollection = fireBlockArray;
+//           const oneLeapSize = Math.floor(70/HTMLcollection.length);
+//           HTMLcollection.forEach((block, index) => {
+            
+//             block.style.height = `${(index + 1)*oneLeapSize}px`;
+            
+//             setTimeout(() => {
+//               coneNode.style.height = `${(index + 1)*oneLeapSize}px`;
+//               block.style.width = `${85 / HTMLcollection.length}%`;
+//               block.style.visibility = 'visible';
+//               block.style.animationName = "fire-block-animation";
+//               block.style.animationDuration = '1s';
+              
+//               setTimeout(() => { block.style.visibility = 'hidden'; }, 900)
+//             }, (index + 1) * Math.floor(1000/HTMLcollection.length))
+//           })
+//         }
+        
+//         const fireAttack = nodeFns.createElement(["fire-attack"]);
+//         for(let i = 0; i<Math.floor(this.node.clientWidth/40);i++){
+//           const fireBlock = nodeFns.createElement(["fire-block"]);
+//           fireBlockArray.push(fireBlock)
+//           fireAttack.append(fireBlock);
+//         }
+//         const fireCone = nodeFns.createElement(["fire-cone"])
+//         fireAttack.append(fireCone);
+        
+//         const attack = nodeFns.createElement([],'div',fireAttack,'attack');
+//         attack.append(fireAttack);
+        
+//         if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
+//         this.node.append(attack);
+//         setTimeout(() => {
+//           fireBlockCSS(fireCone);
+//         }, 1);
+
+//         const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+      
+//         defender.classList.add("hit");
+//         //clearig function
+//         setTimeout(() => {
+//           defender.classList.remove("hit");
+//           this.node.classList.remove("reverse-attack");
+//           while(this.node.firstChild){
+//             this.node.removeChild(this.node.firstChild)
+//           };
+//           this.mainObject.animationInProgrress = false;
+//           console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         }, 1990);
+        
+//       },
+//       Water: () => {
+//         this.mainObject.animationInProgrress = true;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+        
+//         const waterSpout = nodeFns.createElement(["squirt-attack"]);
+//         const attack = nodeFns.createElement([],'div',nodeFns.createElement(["water-ball", "squirt"],'div'),'attack');
+//         attack.append(waterSpout);
+        
+//         if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
+//         this.node.append(attack);
+
+
+//         defender.classList.add("hit");
+
+//         setTimeout(() => {
+//           defender.classList.remove("hit");
+//           while(this.node.firstChild){
+//             this.node.removeChild(this.node.firstChild)
+//           };
+//           this.node.classList.remove("reverse-attack");
+//           this.mainObject.animationInProgrress = false;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         }, 1000);
+//       },
+//       Electric: () => {
+//         this.mainObject.animationInProgrress = true;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         const attacker = this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+//         const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+      
+//         const lightningBolt = nodeFns.createElement(["lightning-bolt"],'div','','lightning-bolt-1',);
+//         const attack = nodeFns.createElement([],'div',nodeFns.createElement(["lightning-attack"],'div',lightningBolt),'attack');
+//         this.node.append(attack);
+//         if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
+
+//         const lightning1 = nodeFns.createElement(["psy-lightning"],'div','',"psy-lightning-1");
+//         const lightning2 = nodeFns.createElement(["psy-lightning"],'div','',"psy-lightning-2");
+//         attacker.append(
+//           lightning1,
+//           lightning2
+//         );
+//         setTimeout(() => {
+//           defender.append(
+//             lightning1,
+//           lightning2
+//           );
+//         }, 1000);
+
+//         defender.classList.add("hit");
+
+//         setTimeout(() => {
+//           defender.removeChild(lightning1);
+//           defender.removeChild(lightning2);
+//           defender.classList.remove("hit");
+//           while(this.node.firstChild){
+//             this.node.removeChild(this.node.firstChild)
+//           };
+//           this.node.classList.remove("reverse-attack");
+//           this.mainObject.animationInProgrress = false;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         }, 1800);
+//       },
+//       Grass: () => {
+//         this.mainObject.animationInProgrress = true;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+      
+//         const leafAttack = nodeFns.createElement(["leaf-attack"]);
+//         let e = 3;
+//         for(let i=0; i<9;i++){
+//           let className = "leaf"; 
+//           if(Math.random()>0.8 && e >0){
+//             className = "energy";
+//             e--;
+//           }
+//           leafAttack.append(nodeFns.createElement([className]));
+//         }
+
+//         const attack = nodeFns.createElement([],'div',leafAttack,'attack');
+        
+//         this.node.append(attack);
+//         if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
+
+//         defender.classList.add("hit");
+
+//         setTimeout(() => {
+//           defender.classList.remove("hit");
+//           while(this.node.firstChild){
+//             this.node.removeChild(this.node.firstChild)
+//           };
+//           this.node.classList.remove("reverse-attack");
+//           this.mainObject.animationInProgrress = false;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         }, 1000);
+//       },
+//       Ice: () => {
+//         this.mainObject.animationInProgrress = true;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+      
+//         const leafAttack = nodeFns.createElement(["leaf-attack"]);
+//         let e = 4;
+//         for(let i=0; i<9;i++){
+//           let className = "ice-shard"; 
+//           if(Math.random()>0.5 && e >0){
+//             className = "snowflake";
+//             e--;
+//           }
+//           leafAttack.append(nodeFns.createElement([className]));
+//         }
+
+//         const attack = nodeFns.createElement([],'div',leafAttack,'attack');
+        
+//         this.node.append(attack);
+//         if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
+
+//         defender.classList.add("hit");
+
+//         setTimeout(() => {
+//           defender.classList.remove("hit");
+//           while(this.node.firstChild){
+//             this.node.removeChild(this.node.firstChild)
+//           };
+//           this.node.classList.remove("reverse-attack");
+//           this.mainObject.animationInProgrress = false;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         }, 1500);
+//       },
+//       Fighting: () => {
+//         this.mainObject.animationInProgrress = true;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         this.allTypeFns.Normal();
+        
+//         const attack = nodeFns.createElement([],'div',nodeFns.createElement(["warrior-attack"],'div',nodeFns.createElement(["warrior-fist-img"],'div')),'attack');
+//         if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
+//         this.node.append(attack);
+        
+//         setTimeout(() => {
+//           this.node.classList.remove("reverse-attack");
+      
+//           while(this.node.firstChild){
+//             this.node.removeChild(this.node.firstChild)
+//           };
+//           console.log('warrior-attack  removed')
+//           this.mainObject.animationInProgrress = false;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         }, 1000);
+//       },
+//       Poison: () => {
+//         console.log("POISON ATTACK");
+//       },
+//       Ground: () => {
+//         this.mainObject.animationInProgrress = true;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         const attacker = this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+//         const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+      
+//         defender.classList.add("earthquake");
+//         attacker.classList.add("thwomp");
+//         setTimeout(() => {
+          
+//           defender.classList.remove("earthquake");
+//           attacker.classList.remove("thwomp");
+//           this.node.classList.remove("reverse-attack");
+//           console.log("ground attack removed")
+//           this.mainObject.animationInProgrress = false;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         }, 1500);
+//       },
+//       Flying: () => {
+//         this.mainObject.animationInProgrress = true;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         const attacker = this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+//         const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+      
+//         attacker.classList.add(this.parentObj.playersTurn? "flying-pokemon-animation-player" : "flying-pokemon-animation-enemy");
+//         const windBlow = nodeFns.createElement(["wind-blow"]);
+       
+//         attacker.append(windBlow);
+
+//         defender.classList.add("hit");
+//         setTimeout(() => {
+//           attacker.classList.remove("flying-pokemon-animation-player");
+//           attacker.classList.remove("flying-pokemon-animation-enemy");
+//           defender.classList.remove("hit");
+//           attacker.removeChild(windBlow);
+//           console.log("flying attack removed")
+//           this.mainObject.animationInProgrress = false;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         }, 1710);
+      
+//       },
+//       Psychic: () => {
+//         this.mainObject.animationInProgrress = true;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         const attacker = this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+//         const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+      
+//         const psyBall = nodeFns.createElement(["psy-ball"]);
+//         psyBall.append(
+//           nodeFns.createElement(["psy-lightning"],'div','',"psy-lightning-1"),
+//           nodeFns.createElement(["psy-lightning"],'div','',"psy-lightning-2")
+//         );
+//         const attack = nodeFns.createElement([],'div',nodeFns.createElement(["psy-attack"],'div',psyBall),'attack');
+        
+//         this.node.append(attack);
+//         if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
+
+//         defender.classList.add("hit");
+
+//         setTimeout(() => {
+      
+//           defender.classList.remove("hit");
+//           while(this.node.firstChild){
+//             this.node.removeChild(this.node.firstChild)
+//           };
+//           this.node.classList.remove("reverse-attack");
+//           this.mainObject.animationInProgrress = false;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         }, 3000);
+//       },
+//       Bug: () => {
+//         this.mainObject.animationInProgrress = true;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         const attacker = this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+//         const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+//         const savageSpitOut = nodeFns.createElement(["savage-spin-out"]);
+        
+//         const silkList = [];
+//         for(let i =0;i<7;i++){
+//           const silkNode = nodeFns.createElement(["silk-line"]);
+//           if(i==2||i==4){silkNode.style.width = '95%'}
+//           else if(i==0||i==6){silkNode.style.width = '55%'}
+//           else if(i==1||i==5){silkNode.style.width = '80%'};
+//           savageSpitOut.append(silkNode);
+//           silkList.push(silkNode);
+//         }
+        
+//         silkList.forEach((div,index)=>{
+//         setTimeout(() => {
+//         div.style.height = `${100/silkList.length}%`;  
+//         }, 80*(index+1));
+//         setTimeout(() => {
+//           div.style.visibility = `hidden`;  
+//           }, 800+(80*(index+1)));
+//         })
+
+//         if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
+		
+//         defender.append(savageSpitOut);
+//         defender.classList.add("hit");
+//         attacker.classList.add("spit");
+
+//         setTimeout(() => {
+//           defender.removeChild(savageSpitOut);
+
+//           defender.classList.remove("hit");
+//           attacker.classList.remove("spit");
+          
+//           this.node.classList.remove("reverse-attack");
+//           this.mainObject.animationInProgrress = false;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         }, 2000);
+//       },
+//       Rock: () => {
+//         this.mainObject.animationInProgrress = true;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         const attacker = this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+//         const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer; 
+//         const attack = nodeFns.createElement([],'div',nodeFns.createElement(["rock-attack"],'div',nodeFns.createElement(["rock-img"])),'attack');
+//         if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
+//         this.node.append(attack);
+//         defender.classList.add('hit');
+//         attacker.classList.add("thwomp");
+//         setTimeout(() => {
+//           this.node.classList.remove("reverse-attack");
+//           defender.classList.remove('hit');
+//           attacker.classList.remove("thwomp");
+//           while(this.node.firstChild){
+//             this.node.removeChild(this.node.firstChild)
+//           };
+//           console.log('rock-attack  removed')
+//           this.mainObject.animationInProgrress = false;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         }, 1500);
+//       },
+//       Ghost: () => {
+//         this.mainObject.animationInProgrress = true;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         const attacker = this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+//         const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+        
+//         const ghostAttack = nodeFns.createElement(["ghost-attack"],'div');
+//         ghostAttack.style.backgroundImage = `url(${this.parentObj.playersTurn? this.parentObj.player.image : this.parentObj.opponent.image})`;
+//         const attack = nodeFns.createElement([],'div',ghostAttack,'attack');
+//         if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
+//         this.node.append(attack);
+//         attacker.classList.add('get-invisible');
+//         defender.classList.add('hit');
+//         setTimeout(() => {
+//           this.node.classList.remove("reverse-attack");
+//           defender.classList.remove('hit');
+//           attacker.classList.remove('get-invisible');
+//           while(this.node.firstChild){
+//             this.node.removeChild(this.node.firstChild)
+//           };
+//           console.log('ghost-attack  removed')
+//           this.mainObject.animationInProgrress = false;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         }, 1700);
+//       },
+//       Dragon: () => {
+//         this.mainObject.animationInProgrress = true;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         this.allTypeFns.Normal();
+//         const attack = nodeFns.createElement([],'div',nodeFns.createElement(["dragon-claw"],'div'),'attack');
+//         if(this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
+//         this.node.append(attack);
+        
+//         setTimeout(() => {
+//           this.node.classList.remove("reverse-attack");
+      
+//           while(this.node.firstChild){
+//             this.node.removeChild(this.node.firstChild)
+//           };
+//           console.log('Dragon attack removed')
+//           this.mainObject.animationInProgrress = false;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         }, 1000);
+       
+//       },
+//       Dark: () => {
+//         this.allTypeFns.Ghost();
+//       },
+//       Steel: () => {
+//         this.mainObject.animationInProgrress = true;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         this.allTypeFns.Normal();
+//         const attack = nodeFns.createElement([],'div',nodeFns.createElement(["metal-claw"],'div'),'attack');
+//         if(this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
+//         this.node.append(attack);
+        
+//         setTimeout(() => {
+//           this.node.classList.remove("reverse-attack");
+      
+//           while(this.node.firstChild){
+//             this.node.removeChild(this.node.firstChild)
+//           };
+//           console.log('Dragon attack removed')
+//           this.mainObject.animationInProgrress = false;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         }, 1000);
+       
+//       },
+//       Fairy: () => {
+//         this.mainObject.animationInProgrress = true;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+//         const fairyAttack = nodeFns.createElement(["fairy-attack"]);
+// 	      const fairyGlitterList = []; 
+//         for(let i=0; i<15;i++){
+//           let className = "fairy-glitter"; 
+//           if(i == 0||i == 3||i == 12){
+//             className = "energy";
+//           }
+// 	        const glitterNode = nodeFns.createElement([className]);
+// 	        fairyGlitterList.push(glitterNode); 
+//           fairyAttack.append(glitterNode);
+//         }
+
+//         fairyGlitterList.forEach(
+//         div => {
+//         const delay = `${Math.floor(Math.random() * 800)}ms`;
+//         div.style.animationDelay = delay;
+//         console.log(delay)
+//         });
+
+//         const attack = nodeFns.createElement([],'div',fairyAttack,'attack');
+//         this.node.append(attack);
+//         if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
+
+//         defender.classList.add("hit");
+
+//         setTimeout(() => {
+//           defender.classList.remove("hit");
+//           while(this.node.firstChild){
+//             this.node.removeChild(this.node.firstChild)
+//           };
+//           this.node.classList.remove("reverse-attack");
+//           this.mainObject.animationInProgrress = false;
+//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+//         }, 1500);
+//       },
+//     };
+//   }
+
+//   render() {
+//     return this.node;
+//   }
+// }
+
 class AttackContainer {
   constructor(parentObj) {
     this.parentObj = parentObj;
     this.mainObject = parentObj;
     
-    this.node = nodeFns.createElement(["attack-container"]);
+  //Kell-e az alábbi?
+    this.opponentAttackNode = nodeFns.createElement(["attack-container", "opponent-attack-container"]);
     
+    this.node = nodeFns.createElement(["attack-container"],'div',this.opponentAttackNode);
+
     this.allTypeFns = this.allTypeFnsSetter();
     this.attackQueve = [()=>{console.log('Go!')}];
     this.setIntervalId = setInterval(() => {
@@ -94,36 +606,45 @@ class AttackContainer {
       if(this.parentObj.math.isEnded){
         this.parentObj.math.endBattle();
       }
-    }, 2001);
-
+    }, 500);
+    this.attackDuration = 2000;
     
     parentObj.goTo.AttackContainer = this;
   }
 
   attackQueveHandler(){
-    if(this.attackQueve.length){this.attackQueve.shift()()}
+    if(this.attackQueve.length && !this.mainObject.animationInProgrress){this.attackQueve.shift()()}
     console.log(this.attackQueve);
   }
 
   allTypeFnsSetter() {
     return {
-      Normal: () => {
-        const attacker = this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-        const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+      Normal: (playersTurn = true) => {
+        this.mainObject.animationInProgrress = true;
+        //console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        
+        const attacker = playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+        const defender = !playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
       
-        attacker.classList.add(this.parentObj.playersTurn? "attacking-enemy" : "attacking-player");
+        attacker.classList.add(playersTurn? "attacking-enemy" : "attacking-player");
         defender.classList.add("hit");
         setTimeout(() => {
           attacker.classList.remove("attacking-enemy")
           attacker.classList.remove("attacking-player");
           defender.classList.remove("hit");
           console.log("attack removed")
+          this.mainObject.animationInProgrress = false;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
         }, 1000);
       
       },
-      Fire: () => {
+      Fire: (playersTurn = true) => {
+        this.mainObject.animationInProgrress = true;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        const fireBlockArray = [];
+
         function fireBlockCSS(coneNode) {
-          const HTMLcollection = document.querySelectorAll('.fire-block');
+          const HTMLcollection = fireBlockArray;
           const oneLeapSize = Math.floor(70/HTMLcollection.length);
           HTMLcollection.forEach((block, index) => {
             
@@ -144,6 +665,7 @@ class AttackContainer {
         const fireAttack = nodeFns.createElement(["fire-attack"]);
         for(let i = 0; i<Math.floor(this.node.clientWidth/40);i++){
           const fireBlock = nodeFns.createElement(["fire-block"]);
+          fireBlockArray.push(fireBlock)
           fireAttack.append(fireBlock);
         }
         const fireCone = nodeFns.createElement(["fire-cone"])
@@ -152,13 +674,13 @@ class AttackContainer {
         const attack = nodeFns.createElement([],'div',fireAttack,'attack');
         attack.append(fireAttack);
         
-        if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
+        if(!playersTurn){this.node.classList.add("reverse-attack")};
         this.node.append(attack);
         setTimeout(() => {
           fireBlockCSS(fireCone);
         }, 1);
 
-        const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+        const defender = !playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
       
         defender.classList.add("hit");
         //clearig function
@@ -168,17 +690,21 @@ class AttackContainer {
           while(this.node.firstChild){
             this.node.removeChild(this.node.firstChild)
           };
-        }, 1990);
+          this.mainObject.animationInProgrress = false;
+          console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        }, this.attackDuration);
         
       },
-      Water: () => {
-        const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+      Water: (playersTurn = true) => {
+        this.mainObject.animationInProgrress = true;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        const defender = !playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
         
         const waterSpout = nodeFns.createElement(["squirt-attack"]);
         const attack = nodeFns.createElement([],'div',nodeFns.createElement(["water-ball", "squirt"],'div'),'attack');
         attack.append(waterSpout);
         
-        if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
+        if(!playersTurn){this.node.classList.add("reverse-attack")};
         this.node.append(attack);
 
 
@@ -190,16 +716,20 @@ class AttackContainer {
             this.node.removeChild(this.node.firstChild)
           };
           this.node.classList.remove("reverse-attack");
-        }, 1000);
+          this.mainObject.animationInProgrress = false;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        }, this.attackDuration);
       },
-      Electric: () => {
-        const attacker = this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-        const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+      Electric: (playersTurn = true) => {
+        this.mainObject.animationInProgrress = true;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        const attacker = playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+        const defender = !playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
       
         const lightningBolt = nodeFns.createElement(["lightning-bolt"],'div','','lightning-bolt-1',);
         const attack = nodeFns.createElement([],'div',nodeFns.createElement(["lightning-attack"],'div',lightningBolt),'attack');
         this.node.append(attack);
-        if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
+        if(!playersTurn){this.node.classList.add("reverse-attack")};
 
         const lightning1 = nodeFns.createElement(["psy-lightning"],'div','',"psy-lightning-1");
         const lightning2 = nodeFns.createElement(["psy-lightning"],'div','',"psy-lightning-2");
@@ -224,10 +754,14 @@ class AttackContainer {
             this.node.removeChild(this.node.firstChild)
           };
           this.node.classList.remove("reverse-attack");
+          this.mainObject.animationInProgrress = false;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
         }, 1800);
       },
-      Grass: () => {
-        const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+      Grass: (playersTurn = true) => {
+        this.mainObject.animationInProgrress = true;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        const defender = !playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
       
         const leafAttack = nodeFns.createElement(["leaf-attack"]);
         let e = 3;
@@ -243,7 +777,7 @@ class AttackContainer {
         const attack = nodeFns.createElement([],'div',leafAttack,'attack');
         
         this.node.append(attack);
-        if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
+        if(!playersTurn){this.node.classList.add("reverse-attack")};
 
         defender.classList.add("hit");
 
@@ -253,10 +787,14 @@ class AttackContainer {
             this.node.removeChild(this.node.firstChild)
           };
           this.node.classList.remove("reverse-attack");
-        }, 1000);
+          this.mainObject.animationInProgrress = false;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        }, this.attackDuration);
       },
-      Ice: () => {
-        const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+      Ice: (playersTurn = true) => {
+        this.mainObject.animationInProgrress = true;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        const defender = !playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
       
         const leafAttack = nodeFns.createElement(["leaf-attack"]);
         let e = 4;
@@ -272,7 +810,7 @@ class AttackContainer {
         const attack = nodeFns.createElement([],'div',leafAttack,'attack');
         
         this.node.append(attack);
-        if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
+        if(!playersTurn){this.node.classList.add("reverse-attack")};
 
         defender.classList.add("hit");
 
@@ -282,13 +820,17 @@ class AttackContainer {
             this.node.removeChild(this.node.firstChild)
           };
           this.node.classList.remove("reverse-attack");
-        }, 1500);
+          this.mainObject.animationInProgrress = false;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        }, this.attackDuration);
       },
-      Fighting: () => {
-        this.allTypeFns.Normal();
+      Fighting: (playersTurn = true) => {
+        this.mainObject.animationInProgrress = true;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        this.allTypeFns.Normal(playersTurn);
         
         const attack = nodeFns.createElement([],'div',nodeFns.createElement(["warrior-attack"],'div',nodeFns.createElement(["warrior-fist-img"],'div')),'attack');
-        if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
+        if(!playersTurn){this.node.classList.add("reverse-attack")};
         this.node.append(attack);
         
         setTimeout(() => {
@@ -298,14 +840,18 @@ class AttackContainer {
             this.node.removeChild(this.node.firstChild)
           };
           console.log('warrior-attack  removed')
-        }, 1000);
+          this.mainObject.animationInProgrress = false;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        }, this.attackDuration);
       },
-      Poison: () => {
+      Poison: (playersTurn = true) => {
         console.log("POISON ATTACK");
       },
-      Ground: () => {
-        const attacker = this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-        const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+      Ground: (playersTurn = true) => {
+        this.mainObject.animationInProgrress = true;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        const attacker = playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+        const defender = !playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
       
         defender.classList.add("earthquake");
         attacker.classList.add("thwomp");
@@ -315,13 +861,17 @@ class AttackContainer {
           attacker.classList.remove("thwomp");
           this.node.classList.remove("reverse-attack");
           console.log("ground attack removed")
-        }, 1500);
+          this.mainObject.animationInProgrress = false;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        }, this.attackDuration);
       },
-      Flying: () => {
-        const attacker = this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-        const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+      Flying: (playersTurn = true) => {
+        this.mainObject.animationInProgrress = true;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        const attacker = playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+        const defender = !playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
       
-        attacker.classList.add(this.parentObj.playersTurn? "flying-pokemon-animation-player" : "flying-pokemon-animation-enemy");
+        attacker.classList.add(playersTurn? "flying-pokemon-animation-player" : "flying-pokemon-animation-enemy");
         const windBlow = nodeFns.createElement(["wind-blow"]);
        
         attacker.append(windBlow);
@@ -333,12 +883,16 @@ class AttackContainer {
           defender.classList.remove("hit");
           attacker.removeChild(windBlow);
           console.log("flying attack removed")
-        }, 1710);
+          this.mainObject.animationInProgrress = false;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        }, this.attackDuration);
       
       },
-      Psychic: () => {
-        const attacker = this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-        const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+      Psychic: (playersTurn = true) => {
+        this.mainObject.animationInProgrress = true;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        const attacker = playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+        const defender = !playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
       
         const psyBall = nodeFns.createElement(["psy-ball"]);
         psyBall.append(
@@ -348,7 +902,7 @@ class AttackContainer {
         const attack = nodeFns.createElement([],'div',nodeFns.createElement(["psy-attack"],'div',psyBall),'attack');
         
         this.node.append(attack);
-        if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
+        if(!playersTurn){this.node.classList.add("reverse-attack")};
 
         defender.classList.add("hit");
 
@@ -359,11 +913,15 @@ class AttackContainer {
             this.node.removeChild(this.node.firstChild)
           };
           this.node.classList.remove("reverse-attack");
-        }, 3000);
+          this.mainObject.animationInProgrress = false;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        }, this.attackDuration);
       },
-      Bug: () => {
-        const attacker = this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-        const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+      Bug: (playersTurn = true) => {
+        this.mainObject.animationInProgrress = true;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        const attacker = playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+        const defender = !playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
         const savageSpitOut = nodeFns.createElement(["savage-spin-out"]);
         
         const silkList = [];
@@ -385,8 +943,8 @@ class AttackContainer {
           }, 800+(80*(index+1)));
         })
 
-        if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
-		
+        if(!playersTurn){this.node.classList.add("reverse-attack")};
+        
         defender.append(savageSpitOut);
         defender.classList.add("hit");
         attacker.classList.add("spit");
@@ -398,13 +956,17 @@ class AttackContainer {
           attacker.classList.remove("spit");
           
           this.node.classList.remove("reverse-attack");
-        }, 2000);
+          this.mainObject.animationInProgrress = false;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        }, this.attackDuration);
       },
-      Rock: () => {
-        const attacker = this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-        const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer; 
+      Rock: (playersTurn = true) => {
+        this.mainObject.animationInProgrress = true;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        const attacker = playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+        const defender = !playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer; 
         const attack = nodeFns.createElement([],'div',nodeFns.createElement(["rock-attack"],'div',nodeFns.createElement(["rock-img"])),'attack');
-        if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
+        if(!playersTurn){this.node.classList.add("reverse-attack")};
         this.node.append(attack);
         defender.classList.add('hit');
         attacker.classList.add("thwomp");
@@ -415,17 +977,21 @@ class AttackContainer {
           while(this.node.firstChild){
             this.node.removeChild(this.node.firstChild)
           };
-          console.log('warrior-attack  removed')
-        }, 1000);
+          console.log('rock-attack  removed')
+          this.mainObject.animationInProgrress = false;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        }, this.attackDuration);
       },
-      Ghost: () => {
-        const attacker = this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-        const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+      Ghost: (playersTurn = true) => {
+        this.mainObject.animationInProgrress = true;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        const attacker = playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+        const defender = !playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
         
         const ghostAttack = nodeFns.createElement(["ghost-attack"],'div');
-        ghostAttack.style.backgroundImage = `url(${this.parentObj.playersTurn? this.parentObj.player.image : this.parentObj.opponent.image})`;
+        ghostAttack.style.backgroundImage = `url(${playersTurn? this.parentObj.player.image : this.parentObj.opponent.image})`;
         const attack = nodeFns.createElement([],'div',ghostAttack,'attack');
-        if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
+        if(!playersTurn){this.node.classList.add("reverse-attack")};
         this.node.append(attack);
         attacker.classList.add('get-invisible');
         defender.classList.add('hit');
@@ -437,12 +1003,16 @@ class AttackContainer {
             this.node.removeChild(this.node.firstChild)
           };
           console.log('ghost-attack  removed')
-        }, 1700);
+          this.mainObject.animationInProgrress = false;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        }, this.attackDuration);
       },
-      Dragon: () => {
-        this.allTypeFns.Normal();
+      Dragon: (playersTurn = true) => {
+        this.mainObject.animationInProgrress = true;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        this.allTypeFns.Normal(playersTurn);
         const attack = nodeFns.createElement([],'div',nodeFns.createElement(["dragon-claw"],'div'),'attack');
-        if(this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
+        if(playersTurn){this.node.classList.add("reverse-attack")};
         this.node.append(attack);
         
         setTimeout(() => {
@@ -452,16 +1022,20 @@ class AttackContainer {
             this.node.removeChild(this.node.firstChild)
           };
           console.log('Dragon attack removed')
-        }, 1000);
+          this.mainObject.animationInProgrress = false;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        }, this.attackDuration);
        
       },
-      Dark: () => {
-        this.allTypeFns.Ghost();
+      Dark: (playersTurn = true) => {
+        this.allTypeFns.Ghost(playersTurn);
       },
-      Steel: () => {
-        this.allTypeFns.Normal();
+      Steel: (playersTurn = true) => {
+        this.mainObject.animationInProgrress = true;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        this.allTypeFns.Normal(playersTurn);
         const attack = nodeFns.createElement([],'div',nodeFns.createElement(["metal-claw"],'div'),'attack');
-        if(this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
+        if(playersTurn){this.node.classList.add("reverse-attack")};
         this.node.append(attack);
         
         setTimeout(() => {
@@ -471,20 +1045,24 @@ class AttackContainer {
             this.node.removeChild(this.node.firstChild)
           };
           console.log('Dragon attack removed')
-        }, 1000);
+          this.mainObject.animationInProgrress = false;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        }, this.attackDuration);
        
       },
-      Fairy: () => {
-        const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+      Fairy: (playersTurn = true) => {
+        this.mainObject.animationInProgrress = true;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        const defender = !playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
         const fairyAttack = nodeFns.createElement(["fairy-attack"]);
-	      const fairyGlitterList = []; 
+          const fairyGlitterList = []; 
         for(let i=0; i<15;i++){
           let className = "fairy-glitter"; 
           if(i == 0||i == 3||i == 12){
             className = "energy";
           }
-	        const glitterNode = nodeFns.createElement([className]);
-	        fairyGlitterList.push(glitterNode); 
+            const glitterNode = nodeFns.createElement([className]);
+            fairyGlitterList.push(glitterNode); 
           fairyAttack.append(glitterNode);
         }
 
@@ -497,7 +1075,7 @@ class AttackContainer {
 
         const attack = nodeFns.createElement([],'div',fairyAttack,'attack');
         this.node.append(attack);
-        if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
+        if(!playersTurn){this.node.classList.add("reverse-attack")};
 
         defender.classList.add("hit");
 
@@ -507,7 +1085,9 @@ class AttackContainer {
             this.node.removeChild(this.node.firstChild)
           };
           this.node.classList.remove("reverse-attack");
-        }, 1500);
+          this.mainObject.animationInProgrress = false;
+        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        }, this.attackDuration);
       },
     };
   }
@@ -516,6 +1096,7 @@ class AttackContainer {
     return this.node;
   }
 }
+
 
 class BattleInfo {
   constructor(parentObj, player, opponent,maxNumber=30) {
@@ -569,8 +1150,8 @@ class BattleInfo {
         this.mainObject.goTo.BattleMath.gainedXP += 10;
         this.mainObject.goTo.BattleMath.playerAttacks(this.mainObject.goTo.PlayerInfo.chosenType);
         this.Problem = this.promblemGenerator();
-        this.parentObj.render();
-
+        //this.parentObj.render();
+        this.render();
       } else {
         console.warn("Nemjó")
         if(this.Problem.inputElement){this.Problem.inputElement.style.backgroundColor = '#ff5656'}
@@ -626,7 +1207,7 @@ class PlayerInfo {
       const buttonElement = nodeFns.createElement(
         elementClassList,
         elementType,
-        type
+        `${pokedexFns.types[type].uniChar} ${type}`
       );
   
       buttonElement.addEventListener('click',()=>{
@@ -732,7 +1313,7 @@ class BattleMath{
     
     if(!this.isEnded){
       this.parentObj.attackContainer.attackQueve.push(fnToQueue);
-    } else this.endBattle();
+    } else {this.endBattle(); clearTimeout(timeOutId);}
   }
 
   opponentAttacks(){
@@ -740,10 +1321,11 @@ class BattleMath{
     let timeOutId;
     const fnToQueue =()=>{
       timeOutId = setTimeout(() => {
+        if(this.isEnded){return;}
         this.parentObj.playersTurn = false;
         const chosenAttack = this.opponentTypes[Math.floor(Math.random()*this.opponentTypes.length)]   
         this.playerHP -= this.attackEffectvity(chosenAttack)*10;
-        this.parentObj.attackContainer.allTypeFns[chosenAttack]();
+        this.parentObj.attackContainer.allTypeFns[chosenAttack](false);
         
         this.parentObj.battleInfo.player.render();
         this.parentObj.battleInfo.opponent.render();
@@ -800,7 +1382,7 @@ class GameOverModal{
       this.mainObject.parentObj.battleEnded = true;
       this.mainObject.parentObj.reset();
       this.mainObject.close();
-      levelUp();
+      this.mainObject.parentObj.rootObj? this.mainObject.parentObj.rootObj.levelUp() : levelUp();
       //BattleDialog bezárása
     })
     return btn;
@@ -845,40 +1427,51 @@ class GameOverModal{
 }
 
 class ChooseYourHero{
-  constructor(){
+  constructor(rootObj){
+    
+    this.rootObj = rootObj? rootObj : null;
     this.mainObject = null;
     
     this.inputElement = this.createInput();
-    this.node = nodeFns.createElement([]);
+    this.node = nodeFns.createElement(["vs-battle-menu"]);
     this.confirmChoiceBtn = this.confirmChoiceBtnGenerator();
     this.typeSelectElement = this.typeSelectElementGenerator();
     this.entryNodeList = [];
     this.problemTypeSelect = new ProblemTypeSelect(this,true);
     
-    this.pokemonList = pokedexFns.getOwnPokedexEntries();  
-    this.filteredPokemonlist = [...this.pokemonList];
+    //this.pokemonList = pokedexFns.getOwnPokedexEntries();  
+    //TODO kicserélni a this.pokemonListet pokedexFns.getOwnPokedexEntries();  -re
+    this.filteredPokemonlist = [...pokedexFns.getOwnPokedexEntries()];
     this.opponent = pokedexFns.findPokemonInPokedex(
       Math.floor(Math.random() * 423)
     );
     this.chosenPokemon = null;
     this.battleEnded = false;
+  
+    if(this.rootObj && this.rootObj.goTo){
+      this.rootObj.goTo.ChooseYourHero = this;
+    }
   }
 
-  reset(){
+  reset = () =>{
     if(this.battleEnded){
       this.opponent = pokedexFns.findPokemonInPokedex(
         Math.floor(Math.random() * 423)
       );
+      this.filteredPokemonlist = [...pokedexFns.getOwnPokedexEntries()];
       this.chosenPokemon = null;
+      this.typeSelectElement.value = "all";
       this.render();
     }
   }
   
   typeSelectElementGenerator(){
     const selectElement = nodeFns.createElement(["select-type-of-hero"],'select');
-    selectElement.append(nodeFns.createElement([],'option','type'))
+    const allOption = nodeFns.createElement([],'option','all type');
+      allOption.value = "all";
+    selectElement.append(allOption);
     Object.keys(pokedexFns.types).forEach(type=>{
-      const option = nodeFns.createElement([],'option',type);
+      const option = new PokemonTypeComponent(type,'option').render()
       option.value = type;
       option.style.backgroundColor = pokedexFns.types[type].color;
       selectElement.append(option);
@@ -891,12 +1484,15 @@ class ChooseYourHero{
   }
 
   confirmChoiceBtnGenerator(){
-    const confirmBtn = nodeFns.createElement([],'button','OK');
+    const confirmBtn = nodeFns.createElement([],'button','START','start-vs-battle');
     confirmBtn.addEventListener('click',()=>{
       if(this.chosenPokemon){
         this.mainObject = new BattleDialog(true,this.chosenPokemon,this.opponent,this)
         this.mainObject.append();
-      } else {alert('Válassz egy pokemont!');}
+      } else if(!localStorage.pokedex && !localStorage.pokedex.length){
+        alert('Játssz a többi játékmódall, hogy szerezz saját pokemont!')
+      } 
+      else {alert('Válassz egy pokemont!');}
     })
     return confirmBtn;
   }
@@ -913,24 +1509,25 @@ class ChooseYourHero{
     inputElement.type="text"; 
     inputElement.placeholder="🔍 name"; 
     inputElement.id="search-for-hero";
+
     inputElement.addEventListener('change',(event)=>{
-      
       this.listFoundEntries(event.target.value);
     })
-
   
     return inputElement;
   }
 
   listFoundEntries(inputText) {
     const regexp = new RegExp(inputText, "i");
-    this.filteredPokemonlist = this.pokemonList.filter((entry) => regexp.test(entry.name));
+    this.filteredPokemonlist = pokedexFns.getOwnPokedexEntries().filter((entry) => regexp.test(entry.name));
     this.render();
   }
   foundByType(){
-    this.filteredPokemonlist = this.pokemonList.filter(entry=>{
+    this.filteredPokemonlist = this.typeSelectElement.value == "all"? 
+    pokedexFns.getOwnPokedexEntries()
+    : pokedexFns.getOwnPokedexEntries().filter(entry=>{
       return entry.type.includes(this.typeSelectElement.value)
-    })
+    });
     this.render();
   }
 
@@ -939,12 +1536,18 @@ class ChooseYourHero{
       this.node.removeChild(this.node.firstChild)
     }
 
-    
-    const showOpponent = nodeFns.createElement([],'div',nodeFns.createElement([],'h2','Opponent:'));
-      const opponentDiv = new PokemonsToChoose(this,this.opponent);
-      showOpponent.append(opponentDiv.render());
+    const opponentH2 = nodeFns.createElement([],'h2','Opponent:');
+    const showOpponent = nodeFns.createElement(["vs-opponent-div"],'div');
+      const opponentDiv = new PokemonsToChoose(this,this.opponent,false);
+      
+      const infoDiv = new OpponentInfoComponent(this.opponent).render();
+      
+      showOpponent.append(
+        opponentDiv.render(),
+        infoDiv);
     
     const searchBar = nodeFns.createElement(["search-for-hero"],'div',this.inputElement);
+    searchBar.append(this.typeSelectElement,this.confirmChoiceBtn);
     const collection = nodeFns.createElement(["vertical-slide"]);
 
     this.filteredPokemonlist.forEach(entry =>{
@@ -955,12 +1558,12 @@ class ChooseYourHero{
 
     
     this.node.append(
+      opponentH2,
       this.problemTypeSelect.render(),
       showOpponent,
       searchBar,
-      this.typeSelectElement,
       collection,
-      this.confirmChoiceBtn);
+      );
 
     return this.node;
   }
@@ -973,23 +1576,24 @@ class ChooseYourHero{
 }
 
 class PokemonsToChoose{
-  constructor(parentObj,pokedexEntry){
+  constructor(parentObj,pokedexEntry,selectable = true){
     this.pokedexEntry = pokedexEntry;
     this.parentObj = parentObj;
-
+    this.selectable = selectable;
     this.isSelected = false;
     this.node = this.createCardElement()
   }
   createCardElement(){
     const cardElement = nodeFns.createElement(["card"])
     
+    if(this.selectable){
     cardElement.addEventListener("click",()=>{
       this.parentObj.chosenPokemon = this.pokedexEntry;
       this.parentObj.removeIsSelectedFromAll();
       this.isSelected = !this.isSelected;
       this.render();
       console.log(this.pokedexEntry);
-    })
+    })}
     return cardElement;
   }
 
@@ -999,7 +1603,7 @@ class PokemonsToChoose{
     }
     
     const typeElements = this.pokedexEntry.type.map(type =>{
-      const divElement = nodeFns.createElement(["opponenet-type-div"],'div',type)
+      const divElement = new PokemonTypeComponent(type).render() //nodeFns.createElement(["opponenet-type-div"],'div',`${pokedexFns.types[type]["uniChar"]} ${type}`)
       divElement.style.backgroundColor = pokedexFns.types[type].color;
       return divElement;
     })
@@ -1036,7 +1640,7 @@ class ProblemTypeSelect{
     this.problemTypeSelectElement = this.problemTypeSelectElementGenerator()
     this.maxNumberSelectElement = this.maxNumberSelectGenerator();
     this.okBtn = this.okBtnCreator(); 
-    this.node = isDiv? nodeFns.createElement([]) : nodeFns.createElement(["z-index-100"],'dialog');
+    this.node = isDiv? nodeFns.createElement([]) : nodeFns.createElement(["z-index-100","problem-type-choose-dialog"],'dialog');
   }
 
   okBtnCreator(){
@@ -1054,7 +1658,11 @@ class ProblemTypeSelect{
     const selectElement = document.createElement('select');
     selectElement.id = 'problem-type-select-element';
     const additionOption = nodeFns.createElement([],'option','+/-');
+      additionOption.value = '+/-';
+      additionOption.selected = this.selectedProblemType == additionOption.value;
     const multiplyOption = nodeFns.createElement([],'option','×/:');
+      multiplyOption.value = '×/:';
+      multiplyOption.selected = this.selectedProblemType == multiplyOption.value;
     selectElement.append(additionOption,multiplyOption);
 
     selectElement.addEventListener('change',()=>{
@@ -1070,6 +1678,7 @@ class ProblemTypeSelect{
     inputElement.type="number"; 
     inputElement.value= sessionStorage.maxNumber? +sessionStorage.maxNumber: 29;
     inputElement.max=99;
+    inputElement.min=10;
     inputElement.id="search-for-battle-maxNumber";
     inputElement.addEventListener('change',()=>{
       
@@ -1088,6 +1697,7 @@ class ProblemTypeSelect{
     if(!this.isDiv){ this.node.open = this.isOpen;}
     
     if(this.specificType == 'both'){
+      
       this.node.append(
         nodeFns.createElement([],'h4','Csata közbeni példák legyenek:'),
         this.problemTypeSelectElement,
@@ -1102,6 +1712,7 @@ class ProblemTypeSelect{
         this.okBtn,
       ) 
   } else {
+    
     this.node.append(
       nodeFns.createElement([],'p',"Melyik szorzótáblák legyenek?"),
       this.multiplySelect.render,
@@ -1114,5 +1725,86 @@ class ProblemTypeSelect{
 
   append(){
     document.getElementById('root').append(this.render());
+  }
+}
+
+class PokemonTypeComponent{
+  constructor(type,HTMLelement = 'div',isShortened = false){
+    this.type = type;
+    this.isShortened = isShortened;
+    this.node = nodeFns.createElement(["opponenet-type-div"],HTMLelement,`${pokedexFns.types[type].uniChar} ${type}`)
+  }
+
+  render(){
+    this.node.style.backgroundColor = pokedexFns.types[this.type].color;
+    this.node.title = this.type;
+    if(this.isShortened){this.node.innerText = pokedexFns.types[this.type].uniChar? pokedexFns.types[this.type].uniChar : 'N';}
+    if(this.type == "Poison" || this.type == "Ground" || this.type == "Grass" || this.type == "Ghost" || this.type == "Dark"){
+      this.node.style.color = "white";
+    }
+    return this.node;
+  }
+}
+
+class OpponentInfoComponent{
+  constructor(opponentEntry){
+    this.entry = opponentEntry;
+    this.node = nodeFns.createElement(["display-grid"]);
+  }
+  render(){
+    this.entry.type.forEach(type =>{
+    const containerDiv =  nodeFns.createElement(["opponent-info-container"]);
+    containerDiv.style.display = "none";
+    const superDivElement = nodeFns.createElement(["pokemon-type-info-container"]);
+    const weakDivElement = nodeFns.createElement(["pokemon-type-info-container"]);
+    const superSpanElement = nodeFns.createElement([],'span',"Super effective against (200% dmg): ");
+    const unEffectiveDivElement = nodeFns.createElement(["pokemon-type-info-container"]);
+    const unEffectiveSpanElement = nodeFns.createElement([],'span',"Uneffective against (0% dmg):");
+    const weakSpanElement = nodeFns.createElement([],'span',"Weak against (50% dmg):");
+    
+    function listTypes(type,node,effectivity = "superEffective"){
+      if(!pokedexFns.types[type][effectivity] || pokedexFns.types[type][effectivity].length == 0){
+        node.append('none')
+        return;
+      }
+      pokedexFns.types[type][effectivity].forEach(superType=>{
+        const typeDiv = new PokemonTypeComponent(superType,'div',true);
+        node.append(typeDiv.render())
+      })
+    
+    }
+
+    listTypes(type,superDivElement,"superEffective");
+    listTypes(type,weakDivElement,"weakAgainst");
+    listTypes(type,unEffectiveDivElement,"unEffective");
+
+    const headerElement = new PokemonTypeComponent(type).render();
+    const downOpenElement = nodeFns.createElement(['float-right','hover-color-white','cursor-pointer'],'span',"(?)");
+     
+    const downOpenElementEventListener =(event)=>{
+      event.stopImmediatePropagation();
+      console.log(event.target.parentElement)  
+
+      containerDiv.style.display =  containerDiv.style.display == "none" ? "block" : "none";
+      downOpenElement.innerText = downOpenElement.innerText == "(?)" ? ' ^ ' : "(?)";
+    }
+   
+    headerElement.addEventListener('click',downOpenElementEventListener);
+    //headerElement.addEventListener('mouseleave',downOpenElementEventListener);
+
+    headerElement.append(downOpenElement);
+
+    containerDiv.append(
+      superSpanElement,
+      superDivElement,
+      weakSpanElement,
+      weakDivElement,
+      unEffectiveSpanElement,
+      unEffectiveDivElement,
+    );
+    this.node.append(headerElement,containerDiv);
+    })
+    
+    return this.node;
   }
 }

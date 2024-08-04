@@ -278,6 +278,7 @@
 
   body {
     box-sizing: border-box;
+    margin: 0;
   }
 
   .fairy-glitter {
@@ -888,6 +889,11 @@
     cursor: pointer;
   }
 
+  .cursor-pointer{
+    cursor: pointer;
+  }
+
+
   .vertical-slide{
     display: flex;
     flex-direction: row;
@@ -903,15 +909,56 @@
 #search-for-hero{
   max-width: 45vw;
 }
+.search-for-hero{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
 
 #search-for-hero, .select-type-of-hero{
   display: inline;
-  width: 20vw;
+  width: 25vw;
+}
+
+.vs-opponent-div{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.pokemon-type-info-container{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.654);
+}
+.opponent-info-container{
+  
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.654);
+  border-radius: 10px;
+  transition-duration: 400ms;
+}
+.display-grid{
+  display: grid;
+  grid-template-rows: 1fr;
+  overflow-x: hidden;
+  text-overflow: hidden;
 }
 
 .z-index-100{
   z-index: 100;
 }
+
+.problem-type-choose-dialog{
+  border: 0;
+  box-shadow: -10px 10px 1px 5px rgba(0, 0, 0, 0.383);
+  border-radius: 10px;
+}
+
 
 @media (width < 420px){
   .vertical-slide{    
