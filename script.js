@@ -375,8 +375,9 @@ class Multiplication {
       this.button.innerText = "✓";
       xpFns.setXp(xpAtLevel());
       
-      this.parentObj.parentObj.parentObj.rootObj.levelUp(); // TODO kikeresni a megfelelő elérési utat!
-      this.isSolved = true;
+      this.parentObj.rootObj.levelUp(); 
+      //r.levelUp(); // TODO kikeresni a megfelelő elérési utat!
+      this.isSolved = true; 
       this.render();
     }
     return isCorrect;
@@ -434,7 +435,6 @@ class MultiplyProblems {
     btn.innerText = "NEXT >>";
     btn.addEventListener("click", () => {
       if (!this.unsolvedProblemsSum) {
-        console.warn("NEW PROBLEMS!");
         this.problemList = this.createProblems();
         this.render;
       }
@@ -447,6 +447,7 @@ class MultiplyProblems {
   }
 
   createProblems() {
+    console.log('DEBUG HERE!!!!!')
     const list = [];
     for (let i = 0; i < 6; i++) {
       list.push(new Multiplication(this));

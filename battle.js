@@ -1,10 +1,11 @@
 
 
 class BattleDialog {
-  constructor(isOpen = true, pokemon,opponent,parentObj) {
+  constructor(isOpen = true, pokemon,opponent,parentObj,rootObj) {
     this.node = nodeFns.createElement(["battle-dialog"], "dialog");
     this.node.open = isOpen;
     this.parentObj = parentObj;
+    this.rootObj = rootObj;
 
     this.player = pokemon;
     this.opponent = opponent;
@@ -15,7 +16,7 @@ class BattleDialog {
     this.goTo = {};
     this.battleground = nodeFns.createElement(["battleground"]);
     this.attackContainer = new AttackContainer(this);
-    this.battleInfo = new BattleInfo(this, this.player, this.opponent,this.parentObj.problemTypeSelect.maxNumber);
+    this.battleInfo = new BattleInfo(this, this.player, this.opponent,this.parentObj.problemTypeSelect.maxNumber,this.rootObj);
     this.playerPokemonContainer = this.playerImgCreator();
     this.opponentPokemonContainer = this.oppoentImgCreator();
     this.math = new BattleMath(this,this.player,this.opponent);
@@ -82,512 +83,7 @@ class BattleDialog {
   }
 }
 
-// class AttackContainer {
-//   constructor(parentObj) {
-//     this.parentObj = parentObj;
-//     this.mainObject = parentObj;
-    
-//     this.node = nodeFns.createElement(["attack-container"]);
-//     //Kell-e az alábbi?
-//     //this.opponentAttackNode = nodeFns.createElement(["attack-container", "opponent-attack-container"]);
-    
-//     this.allTypeFns = this.allTypeFnsSetter();
-//     this.attackQueve = [()=>{console.log('Go!')}];
-//     this.setIntervalId = setInterval(() => {
-//       this.attackQueveHandler(); 
-//       if(this.parentObj.math.isEnded){
-//         this.parentObj.math.endBattle();
-//       }
-//     }, 500);
 
-    
-//     parentObj.goTo.AttackContainer = this;
-//   }
-
-//   attackQueveHandler(){
-//     if(this.attackQueve.length && !this.mainObject.animationInProgrress){this.attackQueve.shift()()}
-//     console.log(this.attackQueve);
-//   }
-
-//   allTypeFnsSetter() {
-//     return {
-//       Normal: () => {
-//         this.mainObject.animationInProgrress = true;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-        
-//         const attacker = this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-//         const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-      
-//         attacker.classList.add(this.parentObj.playersTurn? "attacking-enemy" : "attacking-player");
-//         defender.classList.add("hit");
-//         setTimeout(() => {
-//           attacker.classList.remove("attacking-enemy")
-//           attacker.classList.remove("attacking-player");
-//           defender.classList.remove("hit");
-//           console.log("attack removed")
-//           this.mainObject.animationInProgrress = false;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         }, 1000);
-      
-//       },
-//       Fire: () => {
-//         this.mainObject.animationInProgrress = true;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         const fireBlockArray = [];
-
-//         function fireBlockCSS(coneNode) {
-//           const HTMLcollection = fireBlockArray;
-//           const oneLeapSize = Math.floor(70/HTMLcollection.length);
-//           HTMLcollection.forEach((block, index) => {
-            
-//             block.style.height = `${(index + 1)*oneLeapSize}px`;
-            
-//             setTimeout(() => {
-//               coneNode.style.height = `${(index + 1)*oneLeapSize}px`;
-//               block.style.width = `${85 / HTMLcollection.length}%`;
-//               block.style.visibility = 'visible';
-//               block.style.animationName = "fire-block-animation";
-//               block.style.animationDuration = '1s';
-              
-//               setTimeout(() => { block.style.visibility = 'hidden'; }, 900)
-//             }, (index + 1) * Math.floor(1000/HTMLcollection.length))
-//           })
-//         }
-        
-//         const fireAttack = nodeFns.createElement(["fire-attack"]);
-//         for(let i = 0; i<Math.floor(this.node.clientWidth/40);i++){
-//           const fireBlock = nodeFns.createElement(["fire-block"]);
-//           fireBlockArray.push(fireBlock)
-//           fireAttack.append(fireBlock);
-//         }
-//         const fireCone = nodeFns.createElement(["fire-cone"])
-//         fireAttack.append(fireCone);
-        
-//         const attack = nodeFns.createElement([],'div',fireAttack,'attack');
-//         attack.append(fireAttack);
-        
-//         if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
-//         this.node.append(attack);
-//         setTimeout(() => {
-//           fireBlockCSS(fireCone);
-//         }, 1);
-
-//         const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-      
-//         defender.classList.add("hit");
-//         //clearig function
-//         setTimeout(() => {
-//           defender.classList.remove("hit");
-//           this.node.classList.remove("reverse-attack");
-//           while(this.node.firstChild){
-//             this.node.removeChild(this.node.firstChild)
-//           };
-//           this.mainObject.animationInProgrress = false;
-//           console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         }, 1990);
-        
-//       },
-//       Water: () => {
-//         this.mainObject.animationInProgrress = true;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-        
-//         const waterSpout = nodeFns.createElement(["squirt-attack"]);
-//         const attack = nodeFns.createElement([],'div',nodeFns.createElement(["water-ball", "squirt"],'div'),'attack');
-//         attack.append(waterSpout);
-        
-//         if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
-//         this.node.append(attack);
-
-
-//         defender.classList.add("hit");
-
-//         setTimeout(() => {
-//           defender.classList.remove("hit");
-//           while(this.node.firstChild){
-//             this.node.removeChild(this.node.firstChild)
-//           };
-//           this.node.classList.remove("reverse-attack");
-//           this.mainObject.animationInProgrress = false;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         }, 1000);
-//       },
-//       Electric: () => {
-//         this.mainObject.animationInProgrress = true;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         const attacker = this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-//         const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-      
-//         const lightningBolt = nodeFns.createElement(["lightning-bolt"],'div','','lightning-bolt-1',);
-//         const attack = nodeFns.createElement([],'div',nodeFns.createElement(["lightning-attack"],'div',lightningBolt),'attack');
-//         this.node.append(attack);
-//         if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
-
-//         const lightning1 = nodeFns.createElement(["psy-lightning"],'div','',"psy-lightning-1");
-//         const lightning2 = nodeFns.createElement(["psy-lightning"],'div','',"psy-lightning-2");
-//         attacker.append(
-//           lightning1,
-//           lightning2
-//         );
-//         setTimeout(() => {
-//           defender.append(
-//             lightning1,
-//           lightning2
-//           );
-//         }, 1000);
-
-//         defender.classList.add("hit");
-
-//         setTimeout(() => {
-//           defender.removeChild(lightning1);
-//           defender.removeChild(lightning2);
-//           defender.classList.remove("hit");
-//           while(this.node.firstChild){
-//             this.node.removeChild(this.node.firstChild)
-//           };
-//           this.node.classList.remove("reverse-attack");
-//           this.mainObject.animationInProgrress = false;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         }, 1800);
-//       },
-//       Grass: () => {
-//         this.mainObject.animationInProgrress = true;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-      
-//         const leafAttack = nodeFns.createElement(["leaf-attack"]);
-//         let e = 3;
-//         for(let i=0; i<9;i++){
-//           let className = "leaf"; 
-//           if(Math.random()>0.8 && e >0){
-//             className = "energy";
-//             e--;
-//           }
-//           leafAttack.append(nodeFns.createElement([className]));
-//         }
-
-//         const attack = nodeFns.createElement([],'div',leafAttack,'attack');
-        
-//         this.node.append(attack);
-//         if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
-
-//         defender.classList.add("hit");
-
-//         setTimeout(() => {
-//           defender.classList.remove("hit");
-//           while(this.node.firstChild){
-//             this.node.removeChild(this.node.firstChild)
-//           };
-//           this.node.classList.remove("reverse-attack");
-//           this.mainObject.animationInProgrress = false;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         }, 1000);
-//       },
-//       Ice: () => {
-//         this.mainObject.animationInProgrress = true;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-      
-//         const leafAttack = nodeFns.createElement(["leaf-attack"]);
-//         let e = 4;
-//         for(let i=0; i<9;i++){
-//           let className = "ice-shard"; 
-//           if(Math.random()>0.5 && e >0){
-//             className = "snowflake";
-//             e--;
-//           }
-//           leafAttack.append(nodeFns.createElement([className]));
-//         }
-
-//         const attack = nodeFns.createElement([],'div',leafAttack,'attack');
-        
-//         this.node.append(attack);
-//         if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
-
-//         defender.classList.add("hit");
-
-//         setTimeout(() => {
-//           defender.classList.remove("hit");
-//           while(this.node.firstChild){
-//             this.node.removeChild(this.node.firstChild)
-//           };
-//           this.node.classList.remove("reverse-attack");
-//           this.mainObject.animationInProgrress = false;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         }, 1500);
-//       },
-//       Fighting: () => {
-//         this.mainObject.animationInProgrress = true;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         this.allTypeFns.Normal();
-        
-//         const attack = nodeFns.createElement([],'div',nodeFns.createElement(["warrior-attack"],'div',nodeFns.createElement(["warrior-fist-img"],'div')),'attack');
-//         if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
-//         this.node.append(attack);
-        
-//         setTimeout(() => {
-//           this.node.classList.remove("reverse-attack");
-      
-//           while(this.node.firstChild){
-//             this.node.removeChild(this.node.firstChild)
-//           };
-//           console.log('warrior-attack  removed')
-//           this.mainObject.animationInProgrress = false;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         }, 1000);
-//       },
-//       Poison: () => {
-//         console.log("POISON ATTACK");
-//       },
-//       Ground: () => {
-//         this.mainObject.animationInProgrress = true;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         const attacker = this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-//         const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-      
-//         defender.classList.add("earthquake");
-//         attacker.classList.add("thwomp");
-//         setTimeout(() => {
-          
-//           defender.classList.remove("earthquake");
-//           attacker.classList.remove("thwomp");
-//           this.node.classList.remove("reverse-attack");
-//           console.log("ground attack removed")
-//           this.mainObject.animationInProgrress = false;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         }, 1500);
-//       },
-//       Flying: () => {
-//         this.mainObject.animationInProgrress = true;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         const attacker = this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-//         const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-      
-//         attacker.classList.add(this.parentObj.playersTurn? "flying-pokemon-animation-player" : "flying-pokemon-animation-enemy");
-//         const windBlow = nodeFns.createElement(["wind-blow"]);
-       
-//         attacker.append(windBlow);
-
-//         defender.classList.add("hit");
-//         setTimeout(() => {
-//           attacker.classList.remove("flying-pokemon-animation-player");
-//           attacker.classList.remove("flying-pokemon-animation-enemy");
-//           defender.classList.remove("hit");
-//           attacker.removeChild(windBlow);
-//           console.log("flying attack removed")
-//           this.mainObject.animationInProgrress = false;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         }, 1710);
-      
-//       },
-//       Psychic: () => {
-//         this.mainObject.animationInProgrress = true;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         const attacker = this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-//         const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-      
-//         const psyBall = nodeFns.createElement(["psy-ball"]);
-//         psyBall.append(
-//           nodeFns.createElement(["psy-lightning"],'div','',"psy-lightning-1"),
-//           nodeFns.createElement(["psy-lightning"],'div','',"psy-lightning-2")
-//         );
-//         const attack = nodeFns.createElement([],'div',nodeFns.createElement(["psy-attack"],'div',psyBall),'attack');
-        
-//         this.node.append(attack);
-//         if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
-
-//         defender.classList.add("hit");
-
-//         setTimeout(() => {
-      
-//           defender.classList.remove("hit");
-//           while(this.node.firstChild){
-//             this.node.removeChild(this.node.firstChild)
-//           };
-//           this.node.classList.remove("reverse-attack");
-//           this.mainObject.animationInProgrress = false;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         }, 3000);
-//       },
-//       Bug: () => {
-//         this.mainObject.animationInProgrress = true;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         const attacker = this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-//         const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-//         const savageSpitOut = nodeFns.createElement(["savage-spin-out"]);
-        
-//         const silkList = [];
-//         for(let i =0;i<7;i++){
-//           const silkNode = nodeFns.createElement(["silk-line"]);
-//           if(i==2||i==4){silkNode.style.width = '95%'}
-//           else if(i==0||i==6){silkNode.style.width = '55%'}
-//           else if(i==1||i==5){silkNode.style.width = '80%'};
-//           savageSpitOut.append(silkNode);
-//           silkList.push(silkNode);
-//         }
-        
-//         silkList.forEach((div,index)=>{
-//         setTimeout(() => {
-//         div.style.height = `${100/silkList.length}%`;  
-//         }, 80*(index+1));
-//         setTimeout(() => {
-//           div.style.visibility = `hidden`;  
-//           }, 800+(80*(index+1)));
-//         })
-
-//         if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
-		
-//         defender.append(savageSpitOut);
-//         defender.classList.add("hit");
-//         attacker.classList.add("spit");
-
-//         setTimeout(() => {
-//           defender.removeChild(savageSpitOut);
-
-//           defender.classList.remove("hit");
-//           attacker.classList.remove("spit");
-          
-//           this.node.classList.remove("reverse-attack");
-//           this.mainObject.animationInProgrress = false;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         }, 2000);
-//       },
-//       Rock: () => {
-//         this.mainObject.animationInProgrress = true;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         const attacker = this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-//         const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer; 
-//         const attack = nodeFns.createElement([],'div',nodeFns.createElement(["rock-attack"],'div',nodeFns.createElement(["rock-img"])),'attack');
-//         if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
-//         this.node.append(attack);
-//         defender.classList.add('hit');
-//         attacker.classList.add("thwomp");
-//         setTimeout(() => {
-//           this.node.classList.remove("reverse-attack");
-//           defender.classList.remove('hit');
-//           attacker.classList.remove("thwomp");
-//           while(this.node.firstChild){
-//             this.node.removeChild(this.node.firstChild)
-//           };
-//           console.log('rock-attack  removed')
-//           this.mainObject.animationInProgrress = false;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         }, 1500);
-//       },
-//       Ghost: () => {
-//         this.mainObject.animationInProgrress = true;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         const attacker = this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-//         const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-        
-//         const ghostAttack = nodeFns.createElement(["ghost-attack"],'div');
-//         ghostAttack.style.backgroundImage = `url(${this.parentObj.playersTurn? this.parentObj.player.image : this.parentObj.opponent.image})`;
-//         const attack = nodeFns.createElement([],'div',ghostAttack,'attack');
-//         if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
-//         this.node.append(attack);
-//         attacker.classList.add('get-invisible');
-//         defender.classList.add('hit');
-//         setTimeout(() => {
-//           this.node.classList.remove("reverse-attack");
-//           defender.classList.remove('hit');
-//           attacker.classList.remove('get-invisible');
-//           while(this.node.firstChild){
-//             this.node.removeChild(this.node.firstChild)
-//           };
-//           console.log('ghost-attack  removed')
-//           this.mainObject.animationInProgrress = false;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         }, 1700);
-//       },
-//       Dragon: () => {
-//         this.mainObject.animationInProgrress = true;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         this.allTypeFns.Normal();
-//         const attack = nodeFns.createElement([],'div',nodeFns.createElement(["dragon-claw"],'div'),'attack');
-//         if(this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
-//         this.node.append(attack);
-        
-//         setTimeout(() => {
-//           this.node.classList.remove("reverse-attack");
-      
-//           while(this.node.firstChild){
-//             this.node.removeChild(this.node.firstChild)
-//           };
-//           console.log('Dragon attack removed')
-//           this.mainObject.animationInProgrress = false;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         }, 1000);
-       
-//       },
-//       Dark: () => {
-//         this.allTypeFns.Ghost();
-//       },
-//       Steel: () => {
-//         this.mainObject.animationInProgrress = true;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         this.allTypeFns.Normal();
-//         const attack = nodeFns.createElement([],'div',nodeFns.createElement(["metal-claw"],'div'),'attack');
-//         if(this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
-//         this.node.append(attack);
-        
-//         setTimeout(() => {
-//           this.node.classList.remove("reverse-attack");
-      
-//           while(this.node.firstChild){
-//             this.node.removeChild(this.node.firstChild)
-//           };
-//           console.log('Dragon attack removed')
-//           this.mainObject.animationInProgrress = false;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         }, 1000);
-       
-//       },
-//       Fairy: () => {
-//         this.mainObject.animationInProgrress = true;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         const defender = !this.parentObj.playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-//         const fairyAttack = nodeFns.createElement(["fairy-attack"]);
-// 	      const fairyGlitterList = []; 
-//         for(let i=0; i<15;i++){
-//           let className = "fairy-glitter"; 
-//           if(i == 0||i == 3||i == 12){
-//             className = "energy";
-//           }
-// 	        const glitterNode = nodeFns.createElement([className]);
-// 	        fairyGlitterList.push(glitterNode); 
-//           fairyAttack.append(glitterNode);
-//         }
-
-//         fairyGlitterList.forEach(
-//         div => {
-//         const delay = `${Math.floor(Math.random() * 800)}ms`;
-//         div.style.animationDelay = delay;
-//         console.log(delay)
-//         });
-
-//         const attack = nodeFns.createElement([],'div',fairyAttack,'attack');
-//         this.node.append(attack);
-//         if(!this.parentObj.playersTurn){this.node.classList.add("reverse-attack")};
-
-//         defender.classList.add("hit");
-
-//         setTimeout(() => {
-//           defender.classList.remove("hit");
-//           while(this.node.firstChild){
-//             this.node.removeChild(this.node.firstChild)
-//           };
-//           this.node.classList.remove("reverse-attack");
-//           this.mainObject.animationInProgrress = false;
-//         console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-//         }, 1500);
-//       },
-//     };
-//   }
-
-//   render() {
-//     return this.node;
-//   }
-// }
 
 class AttackContainer {
   constructor(parentObj) {
@@ -595,9 +91,11 @@ class AttackContainer {
     this.mainObject = parentObj;
     
   //Kell-e az alábbi?
-    this.opponentAttackNode = nodeFns.createElement(["attack-container", "opponent-attack-container"]);
-    
-    this.node = nodeFns.createElement(["attack-container"],'div',this.opponentAttackNode);
+    this.opponentAttackNode = nodeFns.createElement(["attack-container", "opponent-attack-container","reverse-attack"]);
+    this.playerAttackNode = nodeFns.createElement(["attack-container"]);   
+  //Kell-e a fölébbi?  
+    this.node = nodeFns.createElement(["attack-container"],'div',this.playerAttackNode);
+    this.node.append(this.opponentAttackNode);
 
     this.allTypeFns = this.allTypeFnsSetter();
     this.attackQueve = [()=>{console.log('Go!')}];
@@ -617,15 +115,30 @@ class AttackContainer {
     console.log(this.attackQueve);
   }
 
+  presetAttack(playersTurn){
+    const node = playersTurn? this.playerAttackNode : this.opponentAttackNode;
+    this.mainObject.animationInProgrress = true;
+    const attacker = playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+    const defender = !playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+      return {node,attacker,defender};
+      }
+  
+  clearAttack(node,attacker,defender,duration = this.attackDuration){
+    setTimeout(() => {
+      if(defender){defender.classList.remove("hit");}
+      while(node && node.firstChild){
+        node.removeChild(node.firstChild)
+      };
+      this.mainObject.animationInProgrress = false;
+      console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+    }, duration);
+  }
+
   allTypeFnsSetter() {
     return {
       Normal: (playersTurn = true) => {
-        this.mainObject.animationInProgrress = true;
-        //console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-        
-        const attacker = playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-        const defender = !playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-      
+        const {attacker,defender} = this.presetAttack(playersTurn);
+
         attacker.classList.add(playersTurn? "attacking-enemy" : "attacking-player");
         defender.classList.add("hit");
         setTimeout(() => {
@@ -639,8 +152,8 @@ class AttackContainer {
       
       },
       Fire: (playersTurn = true) => {
-        this.mainObject.animationInProgrress = true;
-        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        const {node,attacker,defender} = this.presetAttack(playersTurn);
+
         const fireBlockArray = [];
 
         function fireBlockCSS(coneNode) {
@@ -674,63 +187,35 @@ class AttackContainer {
         const attack = nodeFns.createElement([],'div',fireAttack,'attack');
         attack.append(fireAttack);
         
-        if(!playersTurn){this.node.classList.add("reverse-attack")};
-        this.node.append(attack);
+        node.append(attack);
         setTimeout(() => {
           fireBlockCSS(fireCone);
         }, 1);
 
-        const defender = !playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-      
         defender.classList.add("hit");
         //clearig function
-        setTimeout(() => {
-          defender.classList.remove("hit");
-          this.node.classList.remove("reverse-attack");
-          while(this.node.firstChild){
-            this.node.removeChild(this.node.firstChild)
-          };
-          this.mainObject.animationInProgrress = false;
-          console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-        }, this.attackDuration);
+        this.clearAttack(node,attacker,defender);
         
       },
       Water: (playersTurn = true) => {
-        this.mainObject.animationInProgrress = true;
-        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-        const defender = !playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+        const {node,attacker,defender} = this.presetAttack(playersTurn);
         
         const waterSpout = nodeFns.createElement(["squirt-attack"]);
         const attack = nodeFns.createElement([],'div',nodeFns.createElement(["water-ball", "squirt"],'div'),'attack');
         attack.append(waterSpout);
-        
-        if(!playersTurn){this.node.classList.add("reverse-attack")};
-        this.node.append(attack);
-
+        node.append(attack);
 
         defender.classList.add("hit");
 
-        setTimeout(() => {
-          defender.classList.remove("hit");
-          while(this.node.firstChild){
-            this.node.removeChild(this.node.firstChild)
-          };
-          this.node.classList.remove("reverse-attack");
-          this.mainObject.animationInProgrress = false;
-        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-        }, this.attackDuration);
+        this.clearAttack(node,attacker,defender);
       },
       Electric: (playersTurn = true) => {
-        this.mainObject.animationInProgrress = true;
-        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-        const attacker = playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-        const defender = !playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+        const {node,attacker,defender} = this.presetAttack(playersTurn);
       
         const lightningBolt = nodeFns.createElement(["lightning-bolt"],'div','','lightning-bolt-1',);
         const attack = nodeFns.createElement([],'div',nodeFns.createElement(["lightning-attack"],'div',lightningBolt),'attack');
-        this.node.append(attack);
-        if(!playersTurn){this.node.classList.add("reverse-attack")};
-
+        node.append(attack);
+        
         const lightning1 = nodeFns.createElement(["psy-lightning"],'div','',"psy-lightning-1");
         const lightning2 = nodeFns.createElement(["psy-lightning"],'div','',"psy-lightning-2");
         attacker.append(
@@ -749,19 +234,11 @@ class AttackContainer {
         setTimeout(() => {
           defender.removeChild(lightning1);
           defender.removeChild(lightning2);
-          defender.classList.remove("hit");
-          while(this.node.firstChild){
-            this.node.removeChild(this.node.firstChild)
-          };
-          this.node.classList.remove("reverse-attack");
-          this.mainObject.animationInProgrress = false;
-        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-        }, 1800);
+                }, 1800);
+        this.clearAttack(node,attacker,defender,1800);
       },
       Grass: (playersTurn = true) => {
-        this.mainObject.animationInProgrress = true;
-        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-        const defender = !playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+        const {node,attacker,defender} = this.presetAttack(playersTurn);
       
         const leafAttack = nodeFns.createElement(["leaf-attack"]);
         let e = 3;
@@ -773,29 +250,18 @@ class AttackContainer {
           }
           leafAttack.append(nodeFns.createElement([className]));
         }
-
         const attack = nodeFns.createElement([],'div',leafAttack,'attack');
-        
-        this.node.append(attack);
-        if(!playersTurn){this.node.classList.add("reverse-attack")};
+        node.append(attack);
 
         defender.classList.add("hit");
 
-        setTimeout(() => {
-          defender.classList.remove("hit");
-          while(this.node.firstChild){
-            this.node.removeChild(this.node.firstChild)
-          };
-          this.node.classList.remove("reverse-attack");
-          this.mainObject.animationInProgrress = false;
-        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-        }, this.attackDuration);
+        this.clearAttack(node,attacker,defender);
       },
+     //TODO innen beletenni
+
       Ice: (playersTurn = true) => {
-        this.mainObject.animationInProgrress = true;
-        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-        const defender = !playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-      
+        const {node,attacker,defender} = this.presetAttack(playersTurn);
+
         const leafAttack = nodeFns.createElement(["leaf-attack"]);
         let e = 4;
         for(let i=0; i<9;i++){
@@ -809,91 +275,69 @@ class AttackContainer {
 
         const attack = nodeFns.createElement([],'div',leafAttack,'attack');
         
-        this.node.append(attack);
-        if(!playersTurn){this.node.classList.add("reverse-attack")};
+        node.append(attack);
 
         defender.classList.add("hit");
-
-        setTimeout(() => {
-          defender.classList.remove("hit");
-          while(this.node.firstChild){
-            this.node.removeChild(this.node.firstChild)
-          };
-          this.node.classList.remove("reverse-attack");
-          this.mainObject.animationInProgrress = false;
-        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-        }, this.attackDuration);
+        this.clearAttack(node,attacker,defender);
       },
+
       Fighting: (playersTurn = true) => {
-        this.mainObject.animationInProgrress = true;
-        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        const {node,attacker,defender} = this.presetAttack(playersTurn);
         this.allTypeFns.Normal(playersTurn);
         
         const attack = nodeFns.createElement([],'div',nodeFns.createElement(["warrior-attack"],'div',nodeFns.createElement(["warrior-fist-img"],'div')),'attack');
-        if(!playersTurn){this.node.classList.add("reverse-attack")};
-        this.node.append(attack);
-        
-        setTimeout(() => {
-          this.node.classList.remove("reverse-attack");
-      
-          while(this.node.firstChild){
-            this.node.removeChild(this.node.firstChild)
-          };
-          console.log('warrior-attack  removed')
-          this.mainObject.animationInProgrress = false;
-        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-        }, this.attackDuration);
+        node.append(attack);
+        this.clearAttack(node,attacker,defender);
       },
       Poison: (playersTurn = true) => {
-        console.log("POISON ATTACK");
+        const {node,attacker,defender} = this.presetAttack(playersTurn);
+        
+        const attack = nodeFns.createElement(["poison-attack"],'div');
+          attack.append(nodeFns.createElement(["poison-cloud", "base-cloud"]))
+        for (let c = 1; c <= 9; c++) {
+            attack.append(nodeFns.createElement([`poison-cloud`, `could${c}`]));
+          }
+          attack.append(nodeFns.createElement(["poison-skull"],'div','☠'));
+          
+          defender.append(attack);
+          defender.classList.add('hit');
+          attacker.classList.add('spit');
+          
+        setTimeout(() => {
+          attacker.classList.remove('spit');
+          defender.removeChild(attack);
+        }, this.attackDuration);
+        this.clearAttack(node,attacker,defender);
       },
       Ground: (playersTurn = true) => {
-        this.mainObject.animationInProgrress = true;
-        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-        const attacker = playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-        const defender = !playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+        const {node,attacker,defender} = this.presetAttack(playersTurn);
       
         defender.classList.add("earthquake");
         attacker.classList.add("thwomp");
         setTimeout(() => {
-          
           defender.classList.remove("earthquake");
           attacker.classList.remove("thwomp");
-          this.node.classList.remove("reverse-attack");
-          console.log("ground attack removed")
-          this.mainObject.animationInProgrress = false;
-        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
         }, this.attackDuration);
+        this.clearAttack(node,attacker,defender);
       },
       Flying: (playersTurn = true) => {
-        this.mainObject.animationInProgrress = true;
-        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-        const attacker = playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-        const defender = !playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+        const {node,attacker,defender} = this.presetAttack(playersTurn);
       
         attacker.classList.add(playersTurn? "flying-pokemon-animation-player" : "flying-pokemon-animation-enemy");
         const windBlow = nodeFns.createElement(["wind-blow"]);
-       
         attacker.append(windBlow);
 
         defender.classList.add("hit");
         setTimeout(() => {
           attacker.classList.remove("flying-pokemon-animation-player");
           attacker.classList.remove("flying-pokemon-animation-enemy");
-          defender.classList.remove("hit");
           attacker.removeChild(windBlow);
-          console.log("flying attack removed")
-          this.mainObject.animationInProgrress = false;
-        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
         }, this.attackDuration);
-      
+        this.clearAttack(node,attacker,defender);
       },
       Psychic: (playersTurn = true) => {
-        this.mainObject.animationInProgrress = true;
-        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-        const attacker = playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-        const defender = !playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-      
+        const {node,attacker,defender} = this.presetAttack(playersTurn);
+        
         const psyBall = nodeFns.createElement(["psy-ball"]);
         psyBall.append(
           nodeFns.createElement(["psy-lightning"],'div','',"psy-lightning-1"),
@@ -901,27 +345,14 @@ class AttackContainer {
         );
         const attack = nodeFns.createElement([],'div',nodeFns.createElement(["psy-attack"],'div',psyBall),'attack');
         
-        this.node.append(attack);
-        if(!playersTurn){this.node.classList.add("reverse-attack")};
+        node.append(attack);
 
         defender.classList.add("hit");
 
-        setTimeout(() => {
-      
-          defender.classList.remove("hit");
-          while(this.node.firstChild){
-            this.node.removeChild(this.node.firstChild)
-          };
-          this.node.classList.remove("reverse-attack");
-          this.mainObject.animationInProgrress = false;
-        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-        }, this.attackDuration);
+        this.clearAttack(node,attacker,defender);
       },
       Bug: (playersTurn = true) => {
-        this.mainObject.animationInProgrress = true;
-        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-        const attacker = playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-        const defender = !playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+        const {node,attacker,defender} = this.presetAttack(playersTurn);
         const savageSpitOut = nodeFns.createElement(["savage-spin-out"]);
         
         const silkList = [];
@@ -942,8 +373,6 @@ class AttackContainer {
           div.style.visibility = `hidden`;  
           }, 800+(80*(index+1)));
         })
-
-        if(!playersTurn){this.node.classList.add("reverse-attack")};
         
         defender.append(savageSpitOut);
         defender.classList.add("hit");
@@ -951,109 +380,61 @@ class AttackContainer {
 
         setTimeout(() => {
           defender.removeChild(savageSpitOut);
-
-          defender.classList.remove("hit");
-          attacker.classList.remove("spit");
-          
-          this.node.classList.remove("reverse-attack");
-          this.mainObject.animationInProgrress = false;
-        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+          attacker.classList.remove("spit");  
         }, this.attackDuration);
+        this.clearAttack(node,attacker,defender);
       },
       Rock: (playersTurn = true) => {
-        this.mainObject.animationInProgrress = true;
-        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-        const attacker = playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-        const defender = !playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer; 
+        const {node,attacker,defender} = this.presetAttack(playersTurn);
         const attack = nodeFns.createElement([],'div',nodeFns.createElement(["rock-attack"],'div',nodeFns.createElement(["rock-img"])),'attack');
-        if(!playersTurn){this.node.classList.add("reverse-attack")};
-        this.node.append(attack);
+        
+        node.append(attack);
         defender.classList.add('hit');
         attacker.classList.add("thwomp");
         setTimeout(() => {
-          this.node.classList.remove("reverse-attack");
-          defender.classList.remove('hit');
+        
           attacker.classList.remove("thwomp");
-          while(this.node.firstChild){
-            this.node.removeChild(this.node.firstChild)
-          };
-          console.log('rock-attack  removed')
-          this.mainObject.animationInProgrress = false;
-        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
         }, this.attackDuration);
+        this.clearAttack(node,attacker,defender);
       },
       Ghost: (playersTurn = true) => {
-        this.mainObject.animationInProgrress = true;
-        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-        const attacker = playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
-        const defender = !playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+        const {node,attacker,defender} = this.presetAttack(playersTurn);
         
         const ghostAttack = nodeFns.createElement(["ghost-attack"],'div');
         ghostAttack.style.backgroundImage = `url(${playersTurn? this.parentObj.player.image : this.parentObj.opponent.image})`;
         const attack = nodeFns.createElement([],'div',ghostAttack,'attack');
-        if(!playersTurn){this.node.classList.add("reverse-attack")};
-        this.node.append(attack);
+        
+        node.append(attack);
         attacker.classList.add('get-invisible');
         defender.classList.add('hit');
         setTimeout(() => {
-          this.node.classList.remove("reverse-attack");
-          defender.classList.remove('hit');
           attacker.classList.remove('get-invisible');
-          while(this.node.firstChild){
-            this.node.removeChild(this.node.firstChild)
-          };
-          console.log('ghost-attack  removed')
-          this.mainObject.animationInProgrress = false;
-        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
         }, this.attackDuration);
+        this.clearAttack(node,attacker,defender);
       },
       Dragon: (playersTurn = true) => {
-        this.mainObject.animationInProgrress = true;
-        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        const node = !playersTurn? this.playerAttackNode : this.opponentAttackNode;
+         
         this.allTypeFns.Normal(playersTurn);
         const attack = nodeFns.createElement([],'div',nodeFns.createElement(["dragon-claw"],'div'),'attack');
-        if(playersTurn){this.node.classList.add("reverse-attack")};
-        this.node.append(attack);
         
-        setTimeout(() => {
-          this.node.classList.remove("reverse-attack");
-      
-          while(this.node.firstChild){
-            this.node.removeChild(this.node.firstChild)
-          };
-          console.log('Dragon attack removed')
-          this.mainObject.animationInProgrress = false;
-        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-        }, this.attackDuration);
-       
+        node.append(attack);
+        this.clearAttack(node);
       },
       Dark: (playersTurn = true) => {
         this.allTypeFns.Ghost(playersTurn);
       },
       Steel: (playersTurn = true) => {
-        this.mainObject.animationInProgrress = true;
-        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+        const node = !playersTurn? this.playerAttackNode : this.opponentAttackNode;
+         
         this.allTypeFns.Normal(playersTurn);
         const attack = nodeFns.createElement([],'div',nodeFns.createElement(["metal-claw"],'div'),'attack');
-        if(playersTurn){this.node.classList.add("reverse-attack")};
-        this.node.append(attack);
         
-        setTimeout(() => {
-          this.node.classList.remove("reverse-attack");
-      
-          while(this.node.firstChild){
-            this.node.removeChild(this.node.firstChild)
-          };
-          console.log('Dragon attack removed')
-          this.mainObject.animationInProgrress = false;
-        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-        }, this.attackDuration);
-       
+        node.append(attack);
+        this.clearAttack(node);
       },
       Fairy: (playersTurn = true) => {
-        this.mainObject.animationInProgrress = true;
-        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
-        const defender = !playersTurn? this.parentObj.playerPokemonContainer : this.parentObj.opponentPokemonContainer;
+        const {node,attacker,defender} = this.presetAttack(playersTurn);
         const fairyAttack = nodeFns.createElement(["fairy-attack"]);
           const fairyGlitterList = []; 
         for(let i=0; i<15;i++){
@@ -1074,20 +455,15 @@ class AttackContainer {
         });
 
         const attack = nodeFns.createElement([],'div',fairyAttack,'attack');
-        this.node.append(attack);
-        if(!playersTurn){this.node.classList.add("reverse-attack")};
-
-        defender.classList.add("hit");
+        node.append(attack);
+        attacker.classList.add("spit");
 
         setTimeout(() => {
-          defender.classList.remove("hit");
-          while(this.node.firstChild){
-            this.node.removeChild(this.node.firstChild)
-          };
-          this.node.classList.remove("reverse-attack");
-          this.mainObject.animationInProgrress = false;
-        console.log("this.mainObject.animationInProgrress: ",this.mainObject.animationInProgrress);
+          attacker.classList.remove("spit");  
         }, this.attackDuration);
+
+        defender.classList.add("hit");
+        this.clearAttack(node,attacker,defender);
       },
     };
   }
@@ -1099,9 +475,10 @@ class AttackContainer {
 
 
 class BattleInfo {
-  constructor(parentObj, player, opponent,maxNumber=30) {
+  constructor(parentObj, player, opponent,maxNumber=30,rootObj) {
     this.parentObj = parentObj;
     this.mainObject = parentObj;
+    this.rootObj = rootObj
     
     this.maxNumber = maxNumber;
     this.multiplyNumbersArray = sessionStorage.multiplyNumbersArray? JSON.parse(sessionStorage.multiplyNumbersArray) : multiplyNumbersArray;
@@ -1487,7 +864,7 @@ class ChooseYourHero{
     const confirmBtn = nodeFns.createElement([],'button','START','start-vs-battle');
     confirmBtn.addEventListener('click',()=>{
       if(this.chosenPokemon){
-        this.mainObject = new BattleDialog(true,this.chosenPokemon,this.opponent,this)
+        this.mainObject = new BattleDialog(true,this.chosenPokemon,this.opponent,this,this.rootObj)
         this.mainObject.append();
       } else if(!localStorage.pokedex && !localStorage.pokedex.length){
         alert('Játssz a többi játékmódall, hogy szerezz saját pokemont!')

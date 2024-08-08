@@ -20,20 +20,6 @@
     width: 100%;
     height: 100%;
   }
-
-  .poison-line{
-    background-color: rgb(91, 27, 151);
-    width: 20px;
-    height: 2px;
-    margin: 10px;
-  }
-
-  .poison-attack{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-  }
-
   
 
   @keyframes lightning-strike {
@@ -191,6 +177,7 @@
     width: 15vmin;
     height: 12vmin;
     animation: fist-punch 300ms ease-in-out 200ms infinite;
+    animation-delay: 600ms;
     visibility: hidden;
   }
 
@@ -306,8 +293,89 @@
     animation-iteration-count: infinite;
     animation-timing-function: linear;
   }
+  .poison-attack {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 5rem;
+    margin-top: -100%;
 
+    color: greenyellow;
+    width: 100px;
+    height: 100px;
+    opacity: 0;
+    animation-name: glitter-animation;
+    animation-duration: 1.5s;
+    animation-delay: 0.5s;
+    animation-iteration-count: 1;
+    }
 
+.poison-cloud{
+  position: absolute;
+  width: 35%;
+  height: 25%;
+  background: radial-gradient(rgb(104, 57, 104),rgba(109, 52, 109, 0.7), rgba(128, 0, 128, 0.357));
+    box-shadow: 0 0 5px 5px  rgba(128, 0, 128, 0.357);
+    bottom: 4vmin;
+    right: 10vmin;
+    border-radius: 50%;
+    animation-name: leafBlade;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}
+.poison-skull{
+  z-index: 100;
+}
+.base-cloud{
+  width: 80%;
+  height: 80%;
+  top:10%;
+  left:10%;
+}
+.could1{
+  top:0;
+  left:0;
+  animation-delay: 200ms;
+}
+.could2{
+  top:0%;
+  left:33%;
+  animation-delay: 400ms;
+}
+.could3{
+  top:0;
+  left:66%;
+}
+.could4{
+  top:33%;
+  left:0%;
+  animation-delay: 700ms;
+}
+.could5{
+  top:33%;
+  left:33%;
+  animation-delay: 50ms;
+}
+.could6{
+  top:33%;
+  left:66%;
+  animation-delay: 500ms;
+}
+.could7{
+  top:66%;
+  left:0%;
+  animation-delay: 150ms;
+}
+.could8{
+  top:66%;
+  left:33%;
+  animation-delay: 333ms;
+}
+.could9{
+  top:66%;
+  left:66%;
+}
   @keyframes glitter-animation {
     0% {
       opacity: 0;
@@ -584,7 +652,7 @@
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
     animation-name: player-attack-animation;
-    animation-duration: 1s;
+    animation-duration: 1.2s;
     animation-iteration-count: 1;
     visibility: hidden;
   }
@@ -712,16 +780,18 @@
     }
 
     30% {
-      bottom: 30%;
+      bottom: 20%;
       left: 15%;
     }
 
     99% {
       left: 95%;
-      bottom: 11%;
+      bottom: 16%;
     }
 
     100% {
+      left: 95%;
+      bottom: 16%;
       visibility: hidden;
     }
   }
