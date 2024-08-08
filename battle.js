@@ -933,6 +933,12 @@ class ChooseYourHero{
       collection.append(newEntry.render())
     });
 
+    if(!pokedexFns.getOwnPokedexEntries().length){
+      collection.append('Nincs még saját pokémonod! Játsz a többi játékmódban, hogy gyarapítsd a gyűjteményed.')
+    } else if(!this.filteredPokemonlist.length){
+      collection.append('Nem található a keresésnek megfelelő saját pokémon, amivel csatázhatnál az ellenféllel. Változtass s keresési feltételeken!')
+    }; 
+
     
     this.node.append(
       opponentH2,
