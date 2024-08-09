@@ -353,6 +353,7 @@ class Multiplication {
     this.button = this.buttonCreator();
     this.btnElement = this.button;
     this.isSolved = false;
+    this.isAnswered = false;
   }
 
   inputCreator() {
@@ -371,15 +372,19 @@ class Multiplication {
 
   check = () => {
     let isCorrect = this.inputElement.value == this.c;
+    
     if (isCorrect && !this.isSolved) {
       this.button.innerText = "✓";
       xpFns.setXp(xpAtLevel());
-      
       this.parentObj.rootObj.levelUp(); 
       //r.levelUp(); // TODO kikeresni a megfelelő elérési utat!
       this.isSolved = true; 
       this.render();
-    }
+    } else if(this.isAnswered && !isCorrect){
+      this.inputElement.style.backgroundColor = "red";
+    };
+    this.isAnswered = true;
+
     return isCorrect;
   }
 
@@ -434,7 +439,10 @@ class MultiplyProblems {
     btn.id = "next-multiplycations";
     btn.innerText = "NEXT >>";
     btn.addEventListener("click", () => {
-      if (!this.unsolvedProblemsSum) {
+      if (this.unsolvedProblemsSum) {
+        this.problemList.forEach(problem=>problem.check());
+        this.render;
+      } else {
         this.problemList = this.createProblems();
         this.render;
       }
@@ -443,7 +451,9 @@ class MultiplyProblems {
   }
 
   get unsolvedProblemsSum() {
-    return this.problemList.filter((problemObj) => !problemObj.isSolved).length;
+    return this.problemList.filter((problemObj) => {
+      //problemObj.check();
+      return !problemObj.isSolved}).length;
   }
 
   createProblems() {
@@ -502,7 +512,7 @@ class AdditionAndSubtractionProblems {
     const btnElement = document.createElement("button");
     btnElement.innerText = "Next >>";
     btnElement.addEventListener("click", (e) => {
-      if (this.problemList.every((li) => li.isCorrect)) {
+      if (this.problemList.every((li) => {li.check(); return li.isCorrect;})) {
         console.log("mind jó");
         this.reset();
       }
@@ -641,6 +651,7 @@ class AdditionProblem {
     this.c = /Minus/.test(problemType) ? numberArr[0] : numberArr[2];
     this.isCorrect = undefined;
     this.canGainXP = canGainXP;
+    this.isAnswered = false;
     //nodes
     this.node = document.createElement("tr");
     this.inputElement = this.createInput(maxNumber);
@@ -674,6 +685,8 @@ class AdditionProblem {
   }
 
   check = () => {
+    if(this.isCorrect){return this.isCorrect;};
+    this.isAnswered = true;
     switch (true) {
       case this.problemType == "abx":
         this.isCorrect = this.a + this.b == +this.inputElement.value;
@@ -706,6 +719,7 @@ class AdditionProblem {
         this.parentObj.rootObj.levelUp();
       }
     }
+  
     this.render();
     return this.isCorrect;
   };
@@ -716,6 +730,9 @@ class AdditionProblem {
       this.node.removeChild(this.node.firstChild);
     }
 
+    if(this.isAnswered && !this.isCorrect){
+      this.inputElement.style.backgroundColor = "red";
+    }
     
     this.btnElement.innerText = this.isCorrect ? "✓" : "?";
     this.btnElement.addEventListener("click", this.check);
