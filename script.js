@@ -457,7 +457,6 @@ class MultiplyProblems {
   }
 
   createProblems() {
-    console.log('DEBUG HERE!!!!!')
     const list = [];
     for (let i = 0; i < 6; i++) {
       list.push(new Multiplication(this));
@@ -1214,6 +1213,76 @@ class PokeDexCard{
   }
 }
 
+class StarterPokemonSelect{
+  constructor(parentObj){
+    this.parentObj = parentObj;
+    this.entryNodeList = [
+      new PokemonsToChoose(this,pokedex1[0]),
+      new PokemonsToChoose(this,pokedex1[3]),
+      new PokemonsToChoose(this,pokedex1[6]),
+    ];
+    this.chooseStarterBtn = this.createStarterBtn();
+    
+    this.node = this.createSelectPokemonDialog();
+  }
+
+  removeIsSelectedFromAll(){
+    this.entryNodeList.forEach(obj=>{
+      obj.isSelected = false;
+      obj.render();
+    })
+  }
+
+  createStarterBtn(){
+    const btn = nodeFns.createElement([],'button',"Ezt kérem!");
+    btn.addEventListener('click', 
+    ()=>{  
+      const selected = this.entryNodeList.filter(entryNode=>entryNode.isSelected)[0];
+      console.log("Helló :",this);
+      if(selected){
+        localStorage.setItem('pokedex',`[${+selected.pokedexEntry.nr.replaceAll(/\W/g,'')}]`)
+       
+        this.parentObj.ChooseYourHero.battleEnded = true;
+       
+        this.parentObj.ChooseYourHero.reset();
+        this.parentObj.RenderPokeDex.refresh();
+        this.parentObj.render();
+      } else {alert('Jelöld meg az egyik pokémont a fentiek közül, és próbáld újra!');} 
+    })
+
+    return btn;
+  }  
+
+  createSelectPokemonDialog(){
+    const starterPokemonDialog = nodeFns.createElement(
+      [],
+      'dialog',
+      '',
+      "choose-starter-pokemon",
+    );    
+  return starterPokemonDialog;
+  }
+
+  render(){
+  while (this.node.firstChild) {
+    console.log(`deleting ${this.node.firstChild}`);
+    this.node.removeChild(this.node.firstChild);
+  }
+    this.node.append(
+      nodeFns.createElement([],'h3','Válassz kezdő pokémont!'),
+      ...this.entryNodeList.map(obj=>obj.render()),
+      this.chooseStarterBtn,
+    );
+
+    return this.node;
+  }
+
+  append(){
+    document.getElementById("problems").append(this.render());
+  }
+}
+
+
 function whoSThatPokemonRender() {
   let toRender = "";
   const entry = findPokemonInPokedex(Math.floor(Math.random() * 351));
@@ -1251,18 +1320,13 @@ function whoSThatPokemon(pokemonName) {
 }
 
 function firstRun() {
-  if (!localStorage.pokemonXp || !localStorage.pokedex) {
-    console.log("Első indítás");
+ 
     id(
       "problems"
     ).innerHTML = `<div><div><h1>Üdvözöllek leendő PoKéMon mester!</h1>Ebben a játékban matek példákat kell megoldanod a 20-as számkörben. A kérdőjelre kattintva kiderül, helyes-e a válaszod? Minden sikeres megoldás Xp-t ér. A zöld oszlop mutatja, hogy mennyi Xp kell a következő szintlépéshez. Minden szintlépéskor új pokemonnal gyarapszik a gyűjteményed! Vágj bele a kalandba most! <p>Szerezd meg hát mind!</p> <p>Ash</p> </div><button onclick="callToRenders(20)">Kezdjük!</button><div><img src="https://upload.wikimedia.org/wikipedia/en/e/e4/Ash_Ketchum_Journeys.png" alt="Ash welcomes you"></div></div>`;
     localStorage.setItem("pokemonXp", "0");
     localStorage.setItem("pokedex", "[]");
-  } else {
-    console.log("Többedik indítás");
-    callToRenders(20);
-  }
-
+ 
   renderPokeDex();
   levelUp();
   print_lvlNr();
@@ -1288,7 +1352,7 @@ class Root{
   }
 
   firstRun() {
-    if (!localStorage.pokemonXp || !Boolean(+localStorage.pokemonXp) || !localStorage.pokedex) {
+    if (!localStorage.pokemonXp || !Boolean(+localStorage.pokemonXp) || !localStorage.pokedex || localStorage.pokedex =="[]") {
       console.log("Első indítás");
   
       //setting local data
@@ -1306,9 +1370,15 @@ class Root{
       const ashP = nodeFns.createElement([],'p','Ash');
       const letsStartBtn = nodeFns.createElement(["float-right"],'button','Kezdjük');
       letsStartBtn.addEventListener('click',()=>{
-        this.render();
-      })
-
+        
+        if(localStorage.pokedex == '[]')
+          {const selectStarterPokemon = new StarterPokemonSelect(this);
+            selectStarterPokemon.node.open = true;
+            problemsNode.append(selectStarterPokemon.render());
+          }
+        //this.render();
+      });
+      
       const welcomeTxtDiv = nodeFns.createElement(["welcome-text-container"]);
       welcomeTxtDiv.append(
         welcomeH1,
@@ -1326,8 +1396,10 @@ class Root{
         ashImgDiv,
       )
       //appending welcome div
-      problemsNode.append(firstRunDiv);
+      problemsNode.append(firstRunDiv);      
+
       return true;
+    
     } else {
       xpFns.setXp(0);
       console.log("Többedik indítás OOP alapon");

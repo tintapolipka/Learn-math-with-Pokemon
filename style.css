@@ -398,3 +398,13 @@ margin-top: -20%;
 .hover-color-white:hover{
     color:white;
 }
+
+#choose-starter-pokemon{
+    display: flex;
+    flex-direction: column;
+    max-width: 80%;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    border-radius: 10px;
+}

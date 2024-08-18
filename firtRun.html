@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<link rel="stylesheet" href="style.css">
+<script src="battle.js"></script>
+<script src="extractedData.js"></script>
+<script src="script.js"></script>
+</head>
+<body>
+    
+
+<div>
+  <div>
+    <h1>Üdvözöllek leendő PoKéMon mester!</h1>
+    Ebben a játékban matek példákat kell megoldanod a 20-as számkörben. A
+    kérdőjelre kattintva kiderül, helyes-e a válaszod? Minden sikeres megoldás
+    Xp-t ér. A zöld oszlop mutatja, hogy mennyi Xp kell a következő
+    szintlépéshez. Minden szintlépéskor új pokemonnal gyarapszik a gyűjteményed!
+    Vágj bele a kalandba most!
+    <p>Szerezd meg hát mind!</p>
+    <p>Ash</p>
+  </div>
+  <button onclick="alert('Katt!')">Kezdjük!</button>
+  <div>
+    <img
+      src="https://upload.wikimedia.org/wikipedia/en/e/e4/Ash_Ketchum_Journeys.png"
+      alt="Ash welcomes you"
+    />
+  </div>
+</div>
+<dialog id="choose-starter-pokemon" open>
+    <h3>Válassz kezdő pokémont!</h3>
+<script>
+        const bulbasaur = new PokemonsToChoose({},pokedex1[0]);
+        document.getElementById("choose-starter-pokemon").append(bulbasaur.render());
+        const charmander = new PokemonsToChoose({},pokedex1[3]);
+        document.getElementById("choose-starter-pokemon").append(charmander.render());
+        const squirtle = new PokemonsToChoose({},pokedex1[6]);
+        document.getElementById("choose-starter-pokemon").append(squirtle.render());
+    </script>
+<button type="button" onclick="document.getElementById('choose-starter-pokemon').close()">Ok</button>
+</dialog>
+</body>
+</html>
