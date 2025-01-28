@@ -1255,7 +1255,7 @@ class StarterPokemonSelect{
 
   createSelectPokemonDialog(){
     const starterPokemonDialog = nodeFns.createElement(
-      [],
+      ['choose-maxNumber-dialog'],
       'dialog',
       '',
       "choose-starter-pokemon",
@@ -1507,7 +1507,7 @@ class Root{
 class Menu{
   constructor(rootObj){
     this.rootObj = rootObj;
-    this.selected = '+/-';
+    this.selected = 'VS';
 
     this.addOrSubstrBtn = this.buttonGenerator('+/-');
     this.MultiplyBtn = this.buttonGenerator('×/:');
